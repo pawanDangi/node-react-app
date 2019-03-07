@@ -1,0 +1,26 @@
+.line-chart {
+  padding: 1px;
+  width: 100%;
+  height: 100%;
+}
+
+.line-chart .zoom-icon {
+  text-align: right;
+  cursor: pointer;
+}
+
+.line-chart .close-icon {
+  text-align: right;
+  cursor: pointer;
+}
+
+.line-chart .line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+.line-chart .zoom {
+  cursor: move;
+  fill: none;
+  pointer-events: all;
+}

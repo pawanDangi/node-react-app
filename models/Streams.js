@@ -1,7 +1,7 @@
-const Sequelize = require('sequelize');
+import Sequelize from 'sequelize';
 
-module.exports = (sequelize) => {
-  const Streams = sequelize.define('Streams', {
+const Streams = (sequelize) => {
+  return sequelize.define('Streams', {
     stream_id: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -36,5 +36,6 @@ module.exports = (sequelize) => {
     freezeTableName: true,
     tableName: 'stream_registration'
   })
-  return Streams;
 }
+
+export default Streams;

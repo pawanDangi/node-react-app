@@ -1,9 +1,8 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const Sequelize = require('sequelize');
+import express from 'express';
+import bodyParser from 'body-parser';
 
-const models = require('./models');
-const streams = require('./routes/api/streams');
+import models from './models';
+import streams from './routes/api/streams';
 
 const app = express();
 

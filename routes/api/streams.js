@@ -1,8 +1,9 @@
 import express from 'express';
-const router = express.Router();
 
 // Streams Model
 import models from '../../models';
+
+const router = express.Router();
 
 // @route GET api/streams
 // @desc  Get All Streams

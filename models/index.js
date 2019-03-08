@@ -7,14 +7,14 @@ const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'dev';
 
 const { mysql } = config[env];
-let db = {};
+const db = {};
 
 // Connect to SQL
 const sequelize = new Sequelize(mysql.database, mysql.user, mysql.password, {
   host: mysql.host,
-  dialect: mysql.dialect ,
-  pool: {...mysql.pool},
-  operatorsAliases: mysql.operatorsAliases // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
+  dialect: mysql.dialect,
+  pool: { ...mysql.pool },
+  operatorsAliases: mysql.operatorsAliases, // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
 });
 
 sequelize
@@ -26,11 +26,13 @@ sequelize
     console.error('Unable to connect to the database:', err);
   });
 
-fs
-  .readdirSync(__dirname)
-  .filter(file => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
+fs.readdirSync(__dirname)
+  .filter(
+    file =>
+      file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
+  )
   .forEach(file => {
-    const model = sequelize['import'](path.join(__dirname, file));
+    const model = sequelize.import(path.join(__dirname, file));
     db[model.name] = model;
   });
 

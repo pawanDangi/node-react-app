@@ -8,7 +8,12 @@ const router = express.Router();
 // @route GET api/streams
 // @desc  Get All Streams
 router.get('/', (req, res) => {
-  models.Streams.findAll().then(streams => res.json(streams));
+  const { page, pageSize, orderBy, search } = req.query;
+  console.log(typeof page, pageSize, orderBy, search);
+  models.Streams.findAll({
+    offset: Number(page),
+    limit: Number(pageSize)
+  }).then(streams => res.json(streams));
 });
 
 // @route POST api/streams

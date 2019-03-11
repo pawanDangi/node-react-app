@@ -10,13 +10,13 @@ export const fetchStreams = async (
   page = 1,
   pageSize = 10,
   orderBy = '',
-  serach = ''
+  search = ''
 ) => {
   try {
     const response = await axios.get(
       `${configVar.API_HOST}${
         configVar.BASE_URL
-      }/streams?page=${page}&page_size=${pageSize}&order_by=${orderBy}&serach=${serach}`,
+      }/streams?page=${page}&pageSize=${pageSize}&orderBy=${orderBy}&search=${search}`,
       {
         headers: {
           'Content-Type': ' application/json;charset=UTF-8',

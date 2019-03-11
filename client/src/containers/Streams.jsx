@@ -14,7 +14,7 @@ class Streams extends Component {
     pageSize: 50,
     page: 0,
     pages: 0,
-    serach: '',
+    search: '',
     sortBy: [
       {
         id: 'id',
@@ -33,14 +33,14 @@ class Streams extends Component {
     const {
       cookies: { epasso }
     } = this.props;
-    const { page, pageSize, sortBy, serach } = this.state;
+    const { page, pageSize, sortBy, search } = this.state;
     const sortString = sortBy[0].desc ? `-${sortBy[0].id}` : sortBy[0].id;
     const res = await fetchStreams(
       epasso,
       page + 1,
       pageSize,
       sortString,
-      serach
+      search
     );
     this.setState({
       loading: false,
@@ -67,12 +67,12 @@ class Streams extends Component {
   };
 
   onSearch = event => {
-    const { serach } = this.state;
+    const { search } = this.state;
     const {
       target: { value }
     } = event;
-    if (serach !== value) {
-      this.setState({ serach: value }, async () => {
+    if (search !== value) {
+      this.setState({ search: value }, async () => {
         await this.fetchStreamsData();
       });
     }

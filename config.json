@@ -4,7 +4,7 @@
       "host": "localhost",
       "user": "root",
       "password": "root",
-      "database": "pg_monetize_local",
+      "database": "ssai",
       "dialect": "mysql",
       "pool": {
         "max": 5,
@@ -20,7 +20,7 @@
       "host": "localhost",
       "user": "root",
       "password": "root",
-      "database": "pg_monetize_local",
+      "database": "ssai",
       "dialect": "mysql",
       "pool": {
         "max": 5,

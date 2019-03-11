@@ -4,40 +4,71 @@ const Streams = sequelize =>
   sequelize.define(
     'Streams',
     {
-      stream_id: {
+      id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+      },
+      name: {
         type: Sequelize.STRING,
-        allowNull: false,
-        primaryKey: true,
+        allowNull: false
       },
-      stream_url: {
+      daiUrl: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
       },
-      domain_bundle: {
+      url: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false
       },
-      stream_name: {
+      tags: {
         type: Sequelize.STRING,
-        allowNull: false,
+        get() {
+          return (
+            this.getDataValue('tags') && this.getDataValue('tags').split(';|;')
+          );
+        },
+        set(val) {
+          this.setDataValue('tags', val.join(';|;'));
+        }
       },
-      stream_format: {
-        type: Sequelize.STRING,
-        allowNull: false,
+      floorPrice: {
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
-      floor_price: {
-        type: Sequelize.DOUBLE,
-        allowNull: false,
+      domain: {
+        type: Sequelize.STRING
       },
-      stream_type: {
-        type: Sequelize.STRING,
-        allowNull: false,
+      csai: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
       },
+      stitch: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: true
+      },
+      format: {
+        type: Sequelize.ENUM,
+        values: ['HLS', 'DASH']
+      },
+      type: {
+        type: Sequelize.ENUM,
+        values: ['VOD', 'LIVE', 'EVENT']
+      },
+      createdBy: {
+        type: Sequelize.INTEGER
+      },
+      updateBy: {
+        type: Sequelize.INTEGER
+      },
+      status: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: true
+      }
     },
     {
-      timestamps: false,
       freezeTableName: true,
-      tableName: 'stream_registration',
+      tableName: 'streams'
     }
   );
 

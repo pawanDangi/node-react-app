@@ -77,4 +77,23 @@ router.patch('/', (req, res) => {
     .catch(err => res.status(400).json(err));
 });
 
+// @route DELETE api/streams/:id
+// @desc  Delete Stream By ID
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).send({
+      message: 'Stram id missing'
+    });
+  }
+
+  models.Streams.update({ deletedAt: new Date() }, { where: { id } })
+    .then(() => {
+      res.status(200).send({
+        message: 'Stream deleted successfully'
+      });
+    })
+    .catch(err => res.status(400).json(err));
+});
+
 export default router;

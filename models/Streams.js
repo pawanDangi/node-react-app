@@ -68,7 +68,8 @@ const Streams = sequelize =>
     },
     {
       freezeTableName: true,
-      tableName: 'streams'
+      tableName: 'streams',
+      paranoid: true
     }
   );
 

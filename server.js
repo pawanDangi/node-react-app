@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
 
+import authenticate from './authenticate';
 import models from './models';
 import streams from './routes/api/streams';
 
@@ -11,7 +12,7 @@ const app = express();
 app.use(bodyParser.json());
 
 // Use routes
-app.use('/api/streams', streams);
+app.use('/api/streams', authenticate, streams);
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'prod') {

@@ -28,9 +28,13 @@ export const fetchStreams = async (
   } catch (error) {
     snackbar({
       variant: 'error',
-      message: 'Error while fetching streams data.'
+      message:
+        error.response.data.message || 'Error while fetching streams data.'
     });
-    return new Error(error);
+    if (error.response.status === 401) {
+      window.location = '/login';
+    }
+    return [];
   }
 };
 

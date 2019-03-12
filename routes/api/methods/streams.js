@@ -10,7 +10,10 @@ const getStreams = (page, pageSize, search, orderBy) => {
   return new Promise((resolve, reject) => {
     models.Streams.findAll({ ...pagination })
       .then(streams => resolve(streams))
-      .catch(err => reject(err));
+      .catch(err => {
+        console.log(err);
+        reject(err);
+      });
   });
 };
 
@@ -21,7 +24,10 @@ const getStream = id => {
     } else {
       models.Streams.findById(id)
         .then(stream => resolve(stream))
-        .catch(err => reject(err));
+        .catch(err => {
+          console.log(err);
+          reject(err);
+        });
     }
   });
 };
@@ -30,7 +36,10 @@ const createStream = data => {
   return new Promise((resolve, reject) => {
     models.Streams.create({ ...data })
       .then(stream => resolve(stream))
-      .catch(err => reject(err));
+      .catch(err => {
+        console.log(err);
+        reject(err);
+      });
   });
 };
 
@@ -40,9 +49,15 @@ const updateStream = (id, data) => {
       .then(() => {
         models.Streams.findById(id)
           .then(stream => resolve(stream))
-          .catch(err => reject(err));
+          .catch(err => {
+            console.log(err);
+            reject(err);
+          });
       })
-      .catch(err => reject(err));
+      .catch(err => {
+        console.log(err);
+        reject(err);
+      });
   });
 };
 
@@ -54,7 +69,10 @@ const deleteStream = id => {
           message: 'Stream deleted successfully'
         });
       })
-      .catch(err => reject(err));
+      .catch(err => {
+        console.log(err);
+        reject(err);
+      });
   });
 };
 

@@ -1,99 +1,85 @@
 import express from 'express';
 
-// Streams Model
-import models from '../../models';
+// Streams Methods
+import {
+  getStreams,
+  getStream,
+  createStream,
+  updateStream,
+  deleteStream
+} from './methods/streams';
 
 const router = express.Router();
 
 // @route GET api/streams
 // @desc  Get All Streams
-router.get('/', (req, res) => {
-  const { page, pageSize, search } = req.query;
-  let { orderBy } = req.query;
+router.get('/', async (req, res) => {
+  const { page, pageSize, search, orderBy } = req.query;
 
-  models.Streams.findAll({
-    offset: Number(page) || 0,
-    limit: Number(pageSize) || 100
-  })
-    .then(streams => res.status(200).json(streams))
-    .catch(err => res.status(400).json(err));
+  try {
+    const streams = await getStreams(page, pageSize, search, orderBy);
+    res.status(200).json(streams);
+  } catch (err) {
+    res.status(500).send({
+      message: 'Internal Server Error'
+    });
+  }
 });
 
 // @route GET api/streams/:id
 // @desc  Get Stream By ID
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   const { id } = req.params;
-  if (!id) {
-    return res.status(400).send({
-      message: 'Stram id missing'
+
+  try {
+    const stream = await getStream(id);
+    res.status(200).json(stream);
+  } catch (err) {
+    res.status(500).send({
+      message: 'Internal Server Error'
     });
   }
-
-  models.Streams.findById(id)
-    .then(stream => res.status(200).json(stream))
-    .catch(err => res.status(400).json(err));
 });
 
 // @route POST api/streams
 // @desc  Create A Stream
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const { query } = req;
 
-  if (!query) {
-    return res.status(400).send({
-      message: 'Data missing'
-    });
+  try {
+    const stream = await createStream(query);
+    res.status(200).json(stream);
+  } catch (err) {
+    res.status(400).json(err.errors[0].message);
   }
-
-  models.Streams.create({ ...query })
-    .then(stream => res.status(201).json(stream))
-    .catch(err => res.status(400).json(err));
 });
 
 // @route PATCH api/streams
 // @desc  Update A Stream By ID
-router.patch('/', (req, res) => {
-  const { query } = req;
-  const { id, ...value } = query;
+router.patch('/', async (req, res) => {
+  const {
+    query: { id, ...value }
+  } = req;
 
-  if (!id) {
-    return res.status(400).send({
-      message: 'Stram id missing'
-    });
+  try {
+    const stream = await updateStream(id, value);
+    res.status(200).json(stream);
+  } catch (err) {
+    res.status(400).json(err.errors[0].message);
   }
-
-  if (!Object.keys(value).length) {
-    return res.status(400).send({
-      message: 'Data missing'
-    });
-  }
-
-  models.Streams.update({ ...value }, { where: { id } })
-    .then(() => {
-      models.Streams.findById(id)
-        .then(stream => res.status(200).json(stream))
-        .catch(err => res.status(400).json(err));
-    })
-    .catch(err => res.status(400).json(err));
 });
 
 // @route DELETE api/streams/:id
 // @desc  Delete Stream By ID
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id } = req.params;
-  if (!id) {
-    return res.status(400).send({
-      message: 'Stram id missing'
-    });
-  }
 
-  models.Streams.update({ deletedAt: new Date() }, { where: { id } })
-    .then(() => {
-      res.status(200).send({
-        message: 'Stream deleted successfully'
-      });
-    })
-    .catch(err => res.status(400).json(err));
+  try {
+    const stream = await deleteStream(id);
+    res.status(200).json(stream);
+  } catch (err) {
+    res.status(400).json(err.errors[0].message);
+  }
 });
 
 export default router;

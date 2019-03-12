@@ -35,13 +35,7 @@ class Streams extends Component {
     } = this.props;
     const { page, pageSize, sortBy, search } = this.state;
     const sortString = sortBy[0].desc ? `-${sortBy[0].id}` : sortBy[0].id;
-    const res = await fetchStreams(
-      epasso,
-      page + 1,
-      pageSize,
-      sortString,
-      search
-    );
+    const res = await fetchStreams(epasso, page, pageSize, sortString, search);
     this.setState({
       loading: false,
       streams: res || [],

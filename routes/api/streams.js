@@ -17,7 +17,12 @@ router.get('/', async (req, res) => {
   const { page, pageSize, search, orderBy } = req.query;
 
   try {
-    const streams = await getStreams(page, pageSize, search, orderBy);
+    const streams = await getStreams(
+      Number(page),
+      Number(pageSize),
+      search,
+      orderBy
+    );
     res.status(200).json(streams);
   } catch (err) {
     res.status(500).send({

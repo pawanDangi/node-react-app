@@ -7,7 +7,7 @@ const configVar = config[process.env.REACT_APP_ENVIRONMENT];
 
 export const fetchStreams = async (
   token,
-  page = 1,
+  page = 0,
   pageSize = 10,
   orderBy = '',
   search = ''

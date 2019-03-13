@@ -3,30 +3,31 @@ import Sequelize from 'sequelize';
 // Streams Model
 import models from '../../../models';
 
-const Op = Sequelize.Op;
+const { Op } = Sequelize;
 
 const getStreams = (page, pageSize, search, order) => {
-  let pagination = {};
+  const query = {};
   if (pageSize) {
-    pagination.offset = (page || 0) * pageSize;
-    pagination.limit = pageSize;
+    query.offset = (page || 0) * pageSize;
+    query.limit = pageSize;
   }
-  if (order) {
-    pagination.order = [order];
+  if (order.length) {
+    query.order = [order];
   }
   if (search) {
-    pagination.where = {
+    query.where = {
       [Op.or]: [
         { name: { [Op.like]: `%${search}%` } },
         { floorPrice: { [Op.like]: `%${search}%` } },
         { type: { [Op.like]: `%${search}%` } },
-        { format: { [Op.like]: `%${search}%` } }
-      ]
+        { format: { [Op.like]: `%${search}%` } },
+      ],
     };
   }
+  query.include = [{ association: 'markers', attributes: ['type', 'value'] }];
 
   return new Promise((resolve, reject) => {
-    models.Streams.findAll({ ...pagination })
+    models.Streams.findAll({ ...query })
       .then(streams => resolve(streams))
       .catch(err => {
         console.log(err);
@@ -35,12 +36,14 @@ const getStreams = (page, pageSize, search, order) => {
   });
 };
 
-const getStream = id => {
-  return new Promise((resolve, reject) => {
+const getStream = id =>
+  new Promise((resolve, reject) => {
     if (!id) {
       resolve({});
     } else {
-      models.Streams.findByPk(id)
+      models.Streams.findByPk(id, {
+        include: [{ association: 'markers', attributes: ['type', 'value'] }],
+      })
         .then(stream => resolve(stream))
         .catch(err => {
           console.log(err);
@@ -48,10 +51,9 @@ const getStream = id => {
         });
     }
   });
-};
 
-const createStream = data => {
-  return new Promise((resolve, reject) => {
+const createStream = data =>
+  new Promise((resolve, reject) => {
     models.Streams.create({ ...data })
       .then(stream => resolve(stream))
       .catch(err => {
@@ -59,10 +61,9 @@ const createStream = data => {
         reject(err);
       });
   });
-};
 
-const updateStream = (id, data) => {
-  return new Promise((resolve, reject) => {
+const updateStream = (id, data) =>
+  new Promise((resolve, reject) => {
     models.Streams.update({ ...data }, { where: { id } })
       .then(() => {
         models.Streams.findByPk(id)
@@ -77,14 +78,13 @@ const updateStream = (id, data) => {
         reject(err);
       });
   });
-};
 
-const deleteStream = id => {
-  return new Promise((resolve, reject) => {
+const deleteStream = id =>
+  new Promise((resolve, reject) => {
     models.Streams.update({ deletedAt: new Date() }, { where: { id } })
       .then(() => {
         resolve({
-          message: 'Stream deleted successfully'
+          message: 'Stream deleted successfully',
         });
       })
       .catch(err => {
@@ -92,6 +92,5 @@ const deleteStream = id => {
         reject(err);
       });
   });
-};
 
 export { getStreams, getStream, createStream, updateStream, deleteStream };

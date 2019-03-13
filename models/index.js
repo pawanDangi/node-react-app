@@ -42,6 +42,10 @@ Object.keys(db).forEach(modelName => {
   }
 });
 
+// Streams to Markers relationship
+db.Streams.hasOne(db.Markers, { as: 'markers', foreignKey: 'streamId' });
+db.Markers.belongsTo(db.Streams, { foreignKey: 'streamId' });
+
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

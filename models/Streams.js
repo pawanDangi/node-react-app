@@ -7,19 +7,19 @@ const Streams = sequelize =>
       id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
-        primaryKey: true
+        primaryKey: true,
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       daiUrl: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       url: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       tags: {
         type: Sequelize.STRING,
@@ -30,46 +30,47 @@ const Streams = sequelize =>
         },
         set(val) {
           this.setDataValue('tags', val.join(';|;'));
-        }
+        },
       },
       floorPrice: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
       },
       domain: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       csai: {
         type: Sequelize.BOOLEAN,
-        defaultValue: false
+        defaultValue: false,
       },
       stitch: {
         type: Sequelize.BOOLEAN,
-        defaultValue: true
+        defaultValue: true,
       },
       format: {
         type: Sequelize.ENUM,
-        values: ['HLS', 'DASH']
+        values: ['HLS', 'DASH'],
       },
       type: {
         type: Sequelize.ENUM,
-        values: ['VOD', 'LIVE', 'EVENT']
+        values: ['VOD', 'LIVE', 'EVENT'],
       },
       createdBy: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       updateBy: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       status: {
         type: Sequelize.BOOLEAN,
-        defaultValue: true
-      }
+        defaultValue: true,
+      },
     },
     {
+      underscored: false,
       freezeTableName: true,
       tableName: 'streams',
-      paranoid: true
+      paranoid: true,
     }
   );
 

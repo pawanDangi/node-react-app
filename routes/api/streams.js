@@ -6,7 +6,7 @@ import {
   getStream,
   createStream,
   updateStream,
-  deleteStream
+  deleteStream,
 } from './methods/streams';
 
 const router = express.Router();
@@ -16,9 +16,10 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   const { page, pageSize, search, orderBy } = req.query;
   let order = [];
-  if (orderBy.indexOf('-') === 0) {
+  if (orderBy && orderBy.indexOf('-') === 0) {
     order = [orderBy.replace('-', ''), 'DESC'];
-  } else {
+  }
+  if (orderBy) {
     order = [orderBy, 'ASC'];
   }
 
@@ -32,7 +33,7 @@ router.get('/', async (req, res) => {
     res.status(200).json(streams);
   } catch (err) {
     res.status(500).send({
-      message: 'Internal Server Error'
+      message: 'Internal Server Error',
     });
   }
 });
@@ -47,7 +48,7 @@ router.get('/:id', async (req, res) => {
     res.status(200).json(stream);
   } catch (err) {
     res.status(500).send({
-      message: 'Internal Server Error'
+      message: 'Internal Server Error',
     });
   }
 });

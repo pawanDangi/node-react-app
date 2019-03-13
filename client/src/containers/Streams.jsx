@@ -8,6 +8,7 @@ import StreamTable from '../components/streams/StreamTable';
 import { fetchStreams, updateStream } from '../api/streams';
 import columns from '../columns/Streams';
 import alert from '../utils/alert';
+import loader from '../utils/loader';
 
 class Streams extends Component {
   state = {
@@ -84,8 +85,10 @@ class Streams extends Component {
         status ? 'disable' : 'enable'
       } this stream?`,
       handleSuccess: async () => {
+        loader(true);
         await updateStream(epasso, id, { status: !status });
         this.fetchStreamsData();
+        loader(false);
       }
     });
   };

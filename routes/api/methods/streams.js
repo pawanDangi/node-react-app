@@ -20,13 +20,10 @@ const getStreams = (page, pageSize, search, order) => {
         { name: { [Op.like]: `%${search}%` } },
         { floorPrice: { [Op.like]: `%${search}%` } },
         { type: { [Op.like]: `%${search}%` } },
-        { format: { [Op.like]: `%${search}%` } },
-        { tags: { [Op.like]: `%${search}%` } }
+        { format: { [Op.like]: `%${search}%` } }
       ]
     };
   }
-
-  console.log(search);
 
   return new Promise((resolve, reject) => {
     models.Streams.findAll({ ...pagination })

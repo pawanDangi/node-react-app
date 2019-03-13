@@ -61,7 +61,7 @@ router.post('/', async (req, res) => {
     const stream = await createStream(query);
     res.status(200).json(stream);
   } catch (err) {
-    res.status(400).json(err.errors[0].message);
+    res.status(400).json(err.errors[0].message.replace('Streams.', ''));
   }
 });
 
@@ -76,7 +76,7 @@ router.patch('/', async (req, res) => {
     const stream = await updateStream(id, value);
     res.status(200).json(stream);
   } catch (err) {
-    res.status(400).json(err.errors[0].message);
+    res.status(400).json(err.errors[0].message.replace('Streams.', ''));
   }
 });
 

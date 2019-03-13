@@ -15,13 +15,19 @@ const router = express.Router();
 // @desc  Get All Streams
 router.get('/', async (req, res) => {
   const { page, pageSize, search, orderBy } = req.query;
+  let order = [];
+  if (orderBy.indexOf('-') === 0) {
+    order = [orderBy.replace('-', ''), 'DESC'];
+  } else {
+    order = [orderBy, 'ASC'];
+  }
 
   try {
     const streams = await getStreams(
       Number(page),
       Number(pageSize),
       search,
-      orderBy
+      order
     );
     res.status(200).json(streams);
   } catch (err) {

@@ -1,12 +1,16 @@
 // Streams Model
 import models from '../../../models';
 
-const getStreams = (page, pageSize, search, orderBy) => {
+const getStreams = (page, pageSize, search, order) => {
   let pagination = {};
   if (page && pageSize) {
     pagination.offset = page * pageSize;
     pagination.limit = pageSize;
   }
+  if (order) {
+    pagination.order = [order];
+  }
+
   return new Promise((resolve, reject) => {
     models.Streams.findAll({ ...pagination })
       .then(streams => resolve(streams))

@@ -4,7 +4,7 @@ import { Grid, Switch } from '@material-ui/core/';
 import { FileCopy, ArrowDropUp, ArrowDropDown } from '@material-ui/icons/';
 import { Link } from 'react-router-dom';
 
-import { dateFormat, capitalizeFirstLetter } from '../const';
+import { dateFormat } from '../const';
 import copyToClipboard from '../utils/copy-to-clipboard';
 import alert from '../utils/alert';
 
@@ -31,10 +31,10 @@ const columns = sortBy => {
       Cell: row => <Link to={`streams/${row.value}`}>{row.value}</Link>
     },
     {
-      Header: () => <div>Name {sortBy.id === 'stream_name' ? Arrow : ''}</div>,
-      id: 'stream_name',
+      Header: () => <div>Name {sortBy.id === 'name' ? Arrow : ''}</div>,
+      id: 'name',
       minWidth: 200,
-      accessor: d => capitalizeFirstLetter(d.stream_name)
+      accessor: d => d.name
     },
     {
       Header: 'Url',
@@ -63,7 +63,7 @@ const columns = sortBy => {
     },
     {
       Header: 'SSAI Url',
-      accessor: 'dai_url',
+      accessor: 'daiUrl',
       sortable: false,
       minWidth: 300,
       Cell: row => (
@@ -88,12 +88,12 @@ const columns = sortBy => {
     },
     {
       Header: 'Type',
-      accessor: 'stream_type',
+      accessor: 'type',
       sortable: false
     },
     {
       Header: 'Format',
-      accessor: 'stream_format',
+      accessor: 'format',
       sortable: false
     },
     {
@@ -106,7 +106,7 @@ const columns = sortBy => {
       Header: () => (
         <div>Floor Price {sortBy.id === 'floor_price' ? Arrow : ''}</div>
       ),
-      accessor: 'floor_price',
+      accessor: 'floorPrice',
       style: {
         textAlign: 'center'
       },
@@ -120,7 +120,7 @@ const columns = sortBy => {
       },
       accessor: d => (
         <Switch
-          key={`${d.id}-${d.stream_name}`}
+          key={`${d.id}-${d.name}`}
           style={{ height: '18px' }}
           checked={d.status}
           onChange={() => {
@@ -133,10 +133,10 @@ const columns = sortBy => {
     },
     {
       Header: () => (
-        <div>Created At {sortBy.id === 'created_date' ? Arrow : ''}</div>
+        <div>Created At {sortBy.id === 'createdAt' ? Arrow : ''}</div>
       ),
-      id: 'created_date',
-      accessor: d => moment(d.created_date).format(dateFormat),
+      id: 'createdAt',
+      accessor: d => moment(d.createdAt).format(dateFormat),
       style: {
         textAlign: 'center'
       },
@@ -144,10 +144,10 @@ const columns = sortBy => {
     },
     {
       Header: () => (
-        <div>Updated At {sortBy.id === 'last_modified_date' ? Arrow : ''}</div>
+        <div>Updated At {sortBy.id === 'updatedAt' ? Arrow : ''}</div>
       ),
-      id: 'last_modified_date',
-      accessor: d => moment(d.last_modified_date).format(dateFormat),
+      id: 'updatedAt',
+      accessor: d => moment(d.updatedAt).format(dateFormat),
       style: {
         textAlign: 'center'
       },

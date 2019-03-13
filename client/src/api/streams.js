@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { get } from 'lodash';
 import config from '../config.json';
 import snackbar from '../utils/snackbar';
 
@@ -13,17 +12,16 @@ export const fetchStreams = async (
   search = ''
 ) => {
   try {
-    const response = await axios.get(
-      `${configVar.API_HOST}${
+    const response = await axios({
+      url: `${configVar.API_HOST}${
         configVar.BASE_URL
       }/streams?page=${page}&pageSize=${pageSize}&orderBy=${orderBy}&search=${search}`,
-      {
-        headers: {
-          'Content-Type': ' application/json;charset=UTF-8',
-          token
-        }
+      method: 'get',
+      headers: {
+        'Content-Type': ' application/json;charset=UTF-8',
+        token
       }
-    );
+    });
     return response.data;
   } catch (error) {
     snackbar({
@@ -40,50 +38,53 @@ export const fetchStreams = async (
 
 export const fetchStream = async (token, id) => {
   try {
-    const response = await axios.get(
-      `${configVar.API_HOST}${configVar.BASE_URL}/streams/${id}`,
-      {
-        headers: {
-          'Content-Type': ' application/json;charset=UTF-8',
-          token
-        }
+    const response = await axios({
+      url: `${configVar.API_HOST}${configVar.BASE_URL}/streams/${id}`,
+      method: 'get',
+      headers: {
+        'Content-Type': ' application/json;charset=UTF-8',
+        token
       }
-    );
+    });
     return response;
   } catch (error) {
     return new Error(error);
   }
 };
 
-export const createStream = async (token, id) => {
+export const createStream = async (token, value) => {
   try {
-    const response = await axios.post(
-      `${configVar.API_HOST}${configVar.BASE_URL}/streams/${id}`,
-      {
-        headers: {
-          'Content-Type': ' application/json;charset=UTF-8',
-          token
-        }
+    const response = await axios({
+      url: `${configVar.API_HOST}${configVar.BASE_URL}/streams`,
+      method: 'post',
+      data: {
+        ...value
+      },
+      headers: {
+        'Content-Type': ' application/json;charset=UTF-8',
+        token
       }
-    );
+    });
     return response;
   } catch (error) {
     return new Error(error);
   }
 };
 
-export const updateStream = async (token, id) => {
+export const updateStream = async (token, id, value) => {
   try {
-    const response = await axios.patch(
-      `${configVar.API_HOST}${configVar.BASE_URL}/streams/${id}`,
-      {
-        headers: {
-          'Content-Type': ' application/json;charset=UTF-8',
-          token
-        }
+    const response = await axios({
+      url: `${configVar.API_HOST}${configVar.BASE_URL}/streams/${id}`,
+      method: 'patch',
+      data: {
+        ...value
+      },
+      headers: {
+        'Content-Type': ' application/json;charset=UTF-8',
+        token
       }
-    );
-    return get(response, 'data.data.response');
+    });
+    return response;
   } catch (error) {
     return new Error(error);
   }
@@ -91,15 +92,14 @@ export const updateStream = async (token, id) => {
 
 export const deleteStream = async (token, id) => {
   try {
-    const response = await axios.delete(
-      `${configVar.API_HOST}${configVar.BASE_URL}/streams/${id}`,
-      {
-        headers: {
-          'Content-Type': ' application/json;charset=UTF-8',
-          token
-        }
+    const response = await axios({
+      url: `${configVar.API_HOST}${configVar.BASE_URL}/streams/${id}`,
+      method: 'delete',
+      headers: {
+        'Content-Type': ' application/json;charset=UTF-8',
+        token
       }
-    );
+    });
     return response;
   } catch (error) {
     return new Error(error);

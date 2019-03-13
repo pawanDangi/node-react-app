@@ -40,7 +40,7 @@ const getStream = id => {
     if (!id) {
       resolve({});
     } else {
-      models.Streams.findById(id)
+      models.Streams.findByPk(id)
         .then(stream => resolve(stream))
         .catch(err => {
           console.log(err);
@@ -65,7 +65,7 @@ const updateStream = (id, data) => {
   return new Promise((resolve, reject) => {
     models.Streams.update({ ...data }, { where: { id } })
       .then(() => {
-        models.Streams.findById(id)
+        models.Streams.findByPk(id)
           .then(stream => resolve(stream))
           .catch(err => {
             console.log(err);

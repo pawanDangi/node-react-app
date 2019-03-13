@@ -6,19 +6,8 @@ import { Link } from 'react-router-dom';
 
 import { dateFormat } from '../const';
 import copyToClipboard from '../utils/copy-to-clipboard';
-import alert from '../utils/alert';
 
-const statusChange = stream => {
-  alert({
-    title: 'Confirm',
-    text: 'Do you really want to disable this stream?',
-    handleSuccess: () => {
-      console.log(stream);
-    }
-  });
-};
-
-const columns = sortBy => {
+const columns = (sortBy, onStatusChange) => {
   const Arrow = sortBy.desc ? <ArrowDropUp /> : <ArrowDropDown />;
   return [
     {
@@ -124,7 +113,7 @@ const columns = sortBy => {
           style={{ height: '18px' }}
           checked={d.status}
           onChange={() => {
-            statusChange(d);
+            onStatusChange(d);
           }}
           value={d.status}
           color="primary"

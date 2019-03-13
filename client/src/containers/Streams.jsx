@@ -5,8 +5,9 @@ import { get } from 'lodash';
 import PageHeading from '../components/PageHeading';
 import StreamsHeader from '../components/streams/StreamsHeader';
 import StreamTable from '../components/streams/StreamTable';
-import { fetchStreams } from '../api/streams';
+import { fetchStreams, updateStream } from '../api/streams';
 import columns from '../columns/Streams';
+import alert from '../utils/alert';
 
 class Streams extends Component {
   state = {
@@ -72,6 +73,23 @@ class Streams extends Component {
     }
   };
 
+  onStatusChange = stream => {
+    const {
+      cookies: { epasso }
+    } = this.props;
+    const { id, status } = stream;
+    alert({
+      title: 'Confirm',
+      text: `Do you really want to ${
+        status ? 'disable' : 'enable'
+      } this stream?`,
+      handleSuccess: async () => {
+        await updateStream(epasso, id, { status: !status });
+        this.fetchStreamsData();
+      }
+    });
+  };
+
   render() {
     const { streams, loading, pages, pageSize, sortBy } = this.state;
     return (
@@ -81,7 +99,7 @@ class Streams extends Component {
         <StreamTable
           data={streams}
           defaultPageSize={pageSize}
-          columns={columns(sortBy[0])}
+          columns={columns(sortBy[0], this.onStatusChange)}
           pages={pages}
           loading={loading}
           onFetchData={this.onFetchData}

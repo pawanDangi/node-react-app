@@ -67,13 +67,12 @@ router.post('/', async (req, res) => {
 
 // @route PATCH api/streams
 // @desc  Update A Stream By ID
-router.patch('/', async (req, res) => {
-  const {
-    query: { id, ...value }
-  } = req;
+router.patch('/:id', async (req, res) => {
+  const { body } = req;
+  const { id } = req.params;
 
   try {
-    const stream = await updateStream(id, value);
+    const stream = await updateStream(id, body);
     res.status(200).json(stream);
   } catch (err) {
     res.status(400).json(err.errors[0].message.replace('Streams.', ''));

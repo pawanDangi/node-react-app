@@ -1,15 +1,32 @@
+import Sequelize from 'sequelize';
+
 // Streams Model
 import models from '../../../models';
 
+const Op = Sequelize.Op;
+
 const getStreams = (page, pageSize, search, order) => {
   let pagination = {};
-  if (page && pageSize) {
-    pagination.offset = page * pageSize;
+  if (pageSize) {
+    pagination.offset = (page || 0) * pageSize;
     pagination.limit = pageSize;
   }
   if (order) {
     pagination.order = [order];
   }
+  if (search) {
+    pagination.where = {
+      [Op.or]: [
+        { name: { [Op.like]: `%${search}%` } },
+        { floorPrice: { [Op.like]: `%${search}%` } },
+        { type: { [Op.like]: `%${search}%` } },
+        { format: { [Op.like]: `%${search}%` } },
+        { tags: { [Op.like]: `%${search}%` } }
+      ]
+    };
+  }
+
+  console.log(search);
 
   return new Promise((resolve, reject) => {
     models.Streams.findAll({ ...pagination })

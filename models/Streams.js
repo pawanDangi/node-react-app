@@ -20,11 +20,10 @@ const getStreams = (page, pageSize, search, order) => {
         { name: { [Op.like]: `%${search}%` } },
         { floorPrice: { [Op.like]: `%${search}%` } },
         { type: { [Op.like]: `%${search}%` } },
-        { format: { [Op.like]: `%${search}%` } }
-      ]
+        { format: { [Op.like]: `%${search}%` } },
+      ],
     };
   }
-  query.include = [{ association: 'markers', attributes: ['type', 'value'] }];
 
   return new Promise((resolve, reject) => {
     schemas.Streams.findAll({ ...query })
@@ -41,9 +40,7 @@ const getStream = id =>
     if (!id) {
       resolve({});
     } else {
-      schemas.Streams.findByPk(id, {
-        include: [{ association: 'markers', attributes: ['type', 'value'] }]
-      })
+      schemas.Streams.findByPk(id, {})
         .then(stream => resolve(stream))
         .catch(err => {
           console.log(err);
@@ -84,7 +81,7 @@ const deleteStream = id =>
     schemas.Streams.update({ deletedAt: new Date() }, { where: { id } })
       .then(() => {
         resolve({
-          message: 'Stream deleted successfully'
+          message: 'Stream deleted successfully',
         });
       })
       .catch(err => {

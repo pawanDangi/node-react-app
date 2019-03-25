@@ -7,6 +7,9 @@ import {
   deleteStream,
 } from '../models/streams';
 
+// Markups Models
+import { createMarkup } from '../models/markups';
+
 const getStreamsController = async (req, res) => {
   const { page, pageSize, search, orderBy } = req.query;
   let order = [];
@@ -46,10 +49,20 @@ const getStreamController = async (req, res) => {
 };
 
 const createStreamController = async (req, res) => {
-  const { query } = req;
+  const {
+    query: { markups, ...streamData },
+  } = req;
 
   try {
-    const stream = await createStream(query);
+    let stream = await createStream(streamData);
+    if (markups) {
+      try {
+        await createMarkup(stream.id, markups);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    stream = await getStream(stream.id);
     res.status(200).json(stream);
   } catch (err) {
     res.status(400).json(err.errors[0].message.replace('Streams.', ''));

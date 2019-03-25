@@ -24,6 +24,9 @@ const getStreams = (page, pageSize, search, order) => {
       ],
     };
   }
+  query.include = [
+    { association: 'markups', attributes: ['id', 'type', 'value'] },
+  ];
 
   return new Promise((resolve, reject) => {
     schemas.Streams.findAll({ ...query })
@@ -40,7 +43,11 @@ const getStream = id =>
     if (!id) {
       resolve({});
     } else {
-      schemas.Streams.findByPk(id, {})
+      schemas.Streams.findByPk(id, {
+        include: [
+          { association: 'markups', attributes: ['id', 'type', 'value'] },
+        ],
+      })
         .then(stream => resolve(stream))
         .catch(err => {
           console.log(err);

@@ -1,19 +1,13 @@
-import express from 'express';
-
-// Streams Methods
+// Streams Models
 import {
   getStreams,
   getStream,
   createStream,
   updateStream,
   deleteStream,
-} from './methods/streams';
+} from '../models/streams';
 
-const router = express.Router();
-
-// @route GET api/streams
-// @desc  Get All Streams
-router.get('/', async (req, res) => {
+const getStreamsController = async (req, res) => {
   const { page, pageSize, search, orderBy } = req.query;
   let order = [];
   if (orderBy && orderBy.indexOf('-') === 0) {
@@ -36,11 +30,9 @@ router.get('/', async (req, res) => {
       message: 'Internal Server Error',
     });
   }
-});
+};
 
-// @route GET api/streams/:id
-// @desc  Get Stream By ID
-router.get('/:id', async (req, res) => {
+const getStreamController = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -51,11 +43,9 @@ router.get('/:id', async (req, res) => {
       message: 'Internal Server Error',
     });
   }
-});
+};
 
-// @route POST api/streams
-// @desc  Create A Stream
-router.post('/', async (req, res) => {
+const createStreamController = async (req, res) => {
   const { query } = req;
 
   try {
@@ -64,11 +54,9 @@ router.post('/', async (req, res) => {
   } catch (err) {
     res.status(400).json(err.errors[0].message.replace('Streams.', ''));
   }
-});
+};
 
-// @route PATCH api/streams
-// @desc  Update A Stream By ID
-router.patch('/:id', async (req, res) => {
+const updateStreamController = async (req, res) => {
   const { body } = req;
   const { id } = req.params;
 
@@ -78,11 +66,9 @@ router.patch('/:id', async (req, res) => {
   } catch (err) {
     res.status(400).json(err.errors[0].message.replace('Streams.', ''));
   }
-});
+};
 
-// @route DELETE api/streams/:id
-// @desc  Delete Stream By ID
-router.delete('/:id', async (req, res) => {
+const deleteStreamController = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -91,6 +77,12 @@ router.delete('/:id', async (req, res) => {
   } catch (err) {
     res.status(400).json(err.errors[0].message);
   }
-});
+};
 
-export default router;
+export {
+  getStreamsController,
+  getStreamController,
+  createStreamController,
+  updateStreamController,
+  deleteStreamController,
+};

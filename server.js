@@ -2,9 +2,9 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
 
-import authenticate from './authenticate';
-import models from './models';
-import streams from './routes/api/streams';
+import auth from './middlewares/auth';
+import tables from './tables';
+import streams from './routes/streams';
 
 const app = express();
 
@@ -12,7 +12,7 @@ const app = express();
 app.use(bodyParser.json());
 
 // Use routes
-app.use('/api/streams', authenticate, streams);
+app.use('/api/streams', auth, streams);
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'prod') {
@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === 'prod') {
 
 const port = process.env.PORT || 5000;
 
-models.sequelize.sync().then(() => {
+tables.sequelize.sync().then(() => {
   /**
    * Listen on provided port, on all network interfaces.
    */

@@ -1,77 +1,96 @@
 import Sequelize from 'sequelize';
 
-const Streams = sequelize =>
-  sequelize.define(
-    'Streams',
-    {
-      id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
-      },
-      name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      daiUrl: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      url: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      tags: {
-        type: Sequelize.STRING,
-        get() {
-          return (
-            this.getDataValue('tags') && this.getDataValue('tags').split(';|;')
-          );
-        },
-        set(val) {
-          this.setDataValue('tags', val.join(';|;'));
-        },
-      },
-      floorPrice: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      domain: {
-        type: Sequelize.STRING,
-      },
-      csai: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
-      },
-      stitch: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: true,
-      },
-      format: {
-        type: Sequelize.ENUM,
-        values: ['HLS', 'DASH'],
-      },
-      type: {
-        type: Sequelize.ENUM,
-        values: ['VOD', 'LIVE', 'EVENT'],
-      },
-      createdBy: {
-        type: Sequelize.INTEGER,
-      },
-      updateBy: {
-        type: Sequelize.INTEGER,
-      },
-      status: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: true,
-      },
-    },
-    {
-      underscored: false,
-      freezeTableName: true,
-      tableName: 'streams',
-      paranoid: true,
-    }
-  );
+// Streams Table
+import tables from '../tables';
 
-export default Streams;
+const { Op } = Sequelize;
+
+const getStreams = (page, pageSize, search, order) => {
+  const query = {};
+  if (pageSize) {
+    query.offset = (page || 0) * pageSize;
+    query.limit = pageSize;
+  }
+  if (order.length) {
+    query.order = [order];
+  }
+  if (search) {
+    query.where = {
+      [Op.or]: [
+        { name: { [Op.like]: `%${search}%` } },
+        { floorPrice: { [Op.like]: `%${search}%` } },
+        { type: { [Op.like]: `%${search}%` } },
+        { format: { [Op.like]: `%${search}%` } },
+      ],
+    };
+  }
+  query.include = [{ association: 'markers', attributes: ['type', 'value'] }];
+
+  return new Promise((resolve, reject) => {
+    tables.Streams.findAll({ ...query })
+      .then(streams => resolve(streams))
+      .catch(err => {
+        console.log(err);
+        reject(err);
+      });
+  });
+};
+
+const getStream = id =>
+  new Promise((resolve, reject) => {
+    if (!id) {
+      resolve({});
+    } else {
+      tables.Streams.findByPk(id, {
+        include: [{ association: 'markers', attributes: ['type', 'value'] }],
+      })
+        .then(stream => resolve(stream))
+        .catch(err => {
+          console.log(err);
+          reject(err);
+        });
+    }
+  });
+
+const createStream = data =>
+  new Promise((resolve, reject) => {
+    tables.Streams.create({ ...data })
+      .then(stream => resolve(stream))
+      .catch(err => {
+        console.log(err);
+        reject(err);
+      });
+  });
+
+const updateStream = (id, data) =>
+  new Promise((resolve, reject) => {
+    tables.Streams.update({ ...data }, { where: { id } })
+      .then(() => {
+        tables.Streams.findByPk(id)
+          .then(stream => resolve(stream))
+          .catch(err => {
+            console.log(err);
+            reject(err);
+          });
+      })
+      .catch(err => {
+        console.log(err);
+        reject(err);
+      });
+  });
+
+const deleteStream = id =>
+  new Promise((resolve, reject) => {
+    tables.Streams.update({ deletedAt: new Date() }, { where: { id } })
+      .then(() => {
+        resolve({
+          message: 'Stream deleted successfully',
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        reject(err);
+      });
+  });
+
+export { getStreams, getStream, createStream, updateStream, deleteStream };

@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === 'prod') {
 
 const port = process.env.PORT || 5000;
 
-schemas.sequelize.sync().then(() => {
+schemas.sequelize.sync({ alter: true }).then(() => {
   /**
    * Listen on provided port, on all network interfaces.
    */

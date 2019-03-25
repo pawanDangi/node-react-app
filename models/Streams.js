@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize';
 
 // Streams Table
-import tables from '../tables';
+import schemas from '../schemas';
 
 const { Op } = Sequelize;
 
@@ -20,14 +20,14 @@ const getStreams = (page, pageSize, search, order) => {
         { name: { [Op.like]: `%${search}%` } },
         { floorPrice: { [Op.like]: `%${search}%` } },
         { type: { [Op.like]: `%${search}%` } },
-        { format: { [Op.like]: `%${search}%` } },
-      ],
+        { format: { [Op.like]: `%${search}%` } }
+      ]
     };
   }
   query.include = [{ association: 'markers', attributes: ['type', 'value'] }];
 
   return new Promise((resolve, reject) => {
-    tables.Streams.findAll({ ...query })
+    schemas.Streams.findAll({ ...query })
       .then(streams => resolve(streams))
       .catch(err => {
         console.log(err);
@@ -41,8 +41,8 @@ const getStream = id =>
     if (!id) {
       resolve({});
     } else {
-      tables.Streams.findByPk(id, {
-        include: [{ association: 'markers', attributes: ['type', 'value'] }],
+      schemas.Streams.findByPk(id, {
+        include: [{ association: 'markers', attributes: ['type', 'value'] }]
       })
         .then(stream => resolve(stream))
         .catch(err => {
@@ -54,7 +54,7 @@ const getStream = id =>
 
 const createStream = data =>
   new Promise((resolve, reject) => {
-    tables.Streams.create({ ...data })
+    schemas.Streams.create({ ...data })
       .then(stream => resolve(stream))
       .catch(err => {
         console.log(err);
@@ -64,9 +64,9 @@ const createStream = data =>
 
 const updateStream = (id, data) =>
   new Promise((resolve, reject) => {
-    tables.Streams.update({ ...data }, { where: { id } })
+    schemas.Streams.update({ ...data }, { where: { id } })
       .then(() => {
-        tables.Streams.findByPk(id)
+        schemas.Streams.findByPk(id)
           .then(stream => resolve(stream))
           .catch(err => {
             console.log(err);
@@ -81,10 +81,10 @@ const updateStream = (id, data) =>
 
 const deleteStream = id =>
   new Promise((resolve, reject) => {
-    tables.Streams.update({ deletedAt: new Date() }, { where: { id } })
+    schemas.Streams.update({ deletedAt: new Date() }, { where: { id } })
       .then(() => {
         resolve({
-          message: 'Stream deleted successfully',
+          message: 'Stream deleted successfully'
         });
       })
       .catch(err => {

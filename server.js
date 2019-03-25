@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import path from 'path';
 
 import auth from './middlewares/auth';
-import tables from './tables';
+import schemas from './schemas';
 import streams from './routes/streams';
 
 const app = express();
@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === 'prod') {
 
 const port = process.env.PORT || 5000;
 
-tables.sequelize.sync().then(() => {
+schemas.sequelize.sync().then(() => {
   /**
    * Listen on provided port, on all network interfaces.
    */

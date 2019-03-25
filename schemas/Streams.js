@@ -1,13 +1,18 @@
 import Sequelize from 'sequelize';
 
-const Streams = sequelize =>
+const Streams = (sequelize, DataTypes) =>
   sequelize.define(
     'Streams',
     {
       id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
+        allowNull: false,
         primaryKey: true,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+      },
+      partner: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
       },
       name: {
         type: Sequelize.STRING,
@@ -39,10 +44,6 @@ const Streams = sequelize =>
       domain: {
         type: Sequelize.STRING,
       },
-      csai: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
-      },
       stitch: {
         type: Sequelize.BOOLEAN,
         defaultValue: true,
@@ -58,7 +59,7 @@ const Streams = sequelize =>
       createdBy: {
         type: Sequelize.INTEGER,
       },
-      updateBy: {
+      updatedBy: {
         type: Sequelize.INTEGER,
       },
       status: {

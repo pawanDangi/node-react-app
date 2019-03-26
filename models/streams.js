@@ -5,38 +5,58 @@ import schemas from '../schemas';
 
 const { Op } = Sequelize;
 
-const getStreams = (page, pageSize, search, order) => {
-  const query = {};
-  if (pageSize) {
-    query.offset = (page || 0) * pageSize;
-    query.limit = pageSize;
-  }
-  if (order.length) {
-    query.order = [order];
-  }
-  if (search) {
-    query.where = {
-      [Op.or]: [
-        { name: { [Op.like]: `%${search}%` } },
-        { floorPrice: { [Op.like]: `%${search}%` } },
-        { type: { [Op.like]: `%${search}%` } },
-        { format: { [Op.like]: `%${search}%` } },
-      ],
-    };
-  }
-  query.include = [
-    { association: 'markups', attributes: ['id', 'type', 'value'] },
-  ];
+const getStreams = (page, pageSize, search, order) =>
+  new Promise((resolve, reject) => {
+    schemas.Streams.findAndCountAll().then(data => {
+      const query = {
+        offset: 0,
+        limit: 50
+      };
+      if (pageSize) {
+        query.offset = (page || 0) * pageSize;
+        query.limit = pageSize;
+      }
+      if (order.length) {
+        query.order = [order];
+      }
+      if (search) {
+        query.where = {
+          [Op.or]: [
+            { name: { [Op.like]: `%${search}%` } },
+            { floorPrice: { [Op.like]: `%${search}%` } },
+            { type: { [Op.like]: `%${search}%` } },
+            { format: { [Op.like]: `%${search}%` } }
+          ]
+        };
+      }
+      query.include = [
+        { association: 'markups', attributes: ['id', 'type', 'value'] }
+      ];
 
-  return new Promise((resolve, reject) => {
-    schemas.Streams.findAll({ ...query })
-      .then(streams => resolve(streams))
-      .catch(err => {
-        console.log(err);
-        reject(err);
-      });
+      const total = data.count;
+      const pages = Math.ceil(total / query.limit);
+      const prevPage =
+        !page || page === 0 || page < 0 || page > pages ? null : page - 1;
+      const nextPage = page === pages || page > pages ? null : (page || 0) + 1;
+
+      schemas.Streams.findAll({ ...query })
+        .then(streams =>
+          resolve({
+            page: page || 0,
+            pages,
+            prevPage,
+            nextPage,
+            total,
+            pageSize: query.limit,
+            streams
+          })
+        )
+        .catch(err => {
+          console.log(err);
+          reject(err);
+        });
+    });
   });
-};
 
 const getStream = id =>
   new Promise((resolve, reject) => {
@@ -45,8 +65,8 @@ const getStream = id =>
     } else {
       schemas.Streams.findByPk(id, {
         include: [
-          { association: 'markups', attributes: ['id', 'type', 'value'] },
-        ],
+          { association: 'markups', attributes: ['id', 'type', 'value'] }
+        ]
       })
         .then(stream => resolve(stream))
         .catch(err => {
@@ -84,7 +104,7 @@ const deleteStream = id =>
     schemas.Streams.update({ deletedAt: new Date() }, { where: { id } })
       .then(() => {
         resolve({
-          message: 'Stream deleted successfully',
+          message: 'Stream deleted successfully'
         });
       })
       .catch(err => {

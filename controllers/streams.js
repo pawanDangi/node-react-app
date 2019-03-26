@@ -12,9 +12,9 @@ import {
 // Markups Models
 import {
   getMarkupByStreamId,
-  createMarkup,
-  updateMarkup,
-  deleteMarkup,
+  createMarkupByStreamId,
+  updateMarkupByStreamId,
+  deleteMarkupByStreamId,
 } from '../models/markups';
 
 const getStreamsController = async (req, res) => {
@@ -82,7 +82,7 @@ const createStreamController = async (req, res) => {
     }
 
     let stream = await createStream(streamData);
-    await createMarkup(stream.id, markup);
+    await createMarkupByStreamId(stream.id, markup);
 
     stream = await getStream(stream.id);
     res.status(201).json(stream);
@@ -117,9 +117,9 @@ const updateStreamController = async (req, res) => {
       try {
         const m = await getMarkupByStreamId(id);
         if (!isEmpty(m)) {
-          await updateMarkup(id, markup);
+          await updateMarkupByStreamId(id, markup);
         } else {
-          await createMarkup(id, markup);
+          await createMarkupByStreamId(id, markup);
         }
       } catch (e) {
         res.status(400).json(e.errors[0].message.replace('Markups.', ''));
@@ -141,7 +141,7 @@ const deleteStreamController = async (req, res) => {
     if (!stream) {
       res.status(404).json('stream not found.');
     }
-    await deleteMarkup(id);
+    await deleteMarkupByStreamId(id);
     stream = await deleteStream(id);
     res.status(200).json(stream);
   } catch (err) {

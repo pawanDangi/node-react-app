@@ -21,7 +21,7 @@ const getMarkupByStreamId = streamId =>
       });
   });
 
-const createMarkup = (streamId, { type = 'slot', value = {} }) =>
+const createMarkupByStreamId = (streamId, { type = 'slot', value = {} }) =>
   new Promise((resolve, reject) => {
     schemas.Markups.create({ streamId, type, value })
       .then(markup => resolve(markup))
@@ -31,7 +31,7 @@ const createMarkup = (streamId, { type = 'slot', value = {} }) =>
       });
   });
 
-const updateMarkup = (streamId, data = { type: 'slot', value: {} }) =>
+const updateMarkupByStreamId = (streamId, data = { type: 'slot', value: {} }) =>
   new Promise((resolve, reject) => {
     schemas.Markups.update({ ...data }, { where: { streamId } })
       .then(async () => {
@@ -44,12 +44,12 @@ const updateMarkup = (streamId, data = { type: 'slot', value: {} }) =>
       });
   });
 
-const deleteMarkup = streamId =>
+const deleteMarkupByStreamId = streamId =>
   new Promise((resolve, reject) => {
     schemas.Markups.update({ deletedAt: new Date() }, { where: { streamId } })
       .then(() => {
         resolve({
-          message: 'Markup deleted successfully',
+          message: 'Markup deleted successfully'
         });
       })
       .catch(err => {
@@ -59,9 +59,9 @@ const deleteMarkup = streamId =>
   });
 
 export {
-  createMarkup,
-  updateMarkup,
+  createMarkupByStreamId,
+  updateMarkupByStreamId,
   getMarkup,
   getMarkupByStreamId,
-  deleteMarkup,
+  deleteMarkupByStreamId
 };

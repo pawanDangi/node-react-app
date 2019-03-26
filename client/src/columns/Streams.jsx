@@ -11,19 +11,11 @@ const columns = (sortBy, onStatusChange) => {
   const Arrow = sortBy.desc ? <ArrowDropUp /> : <ArrowDropDown />;
   return [
     {
-      Header: () => <div>Id {sortBy.id === 'id' ? Arrow : ''}</div>,
-      accessor: 'id',
-      minWidth: 200,
-      style: {
-        textAlign: 'center'
-      },
-      Cell: row => <Link to={`streams/${row.value}`}>{row.value}</Link>
-    },
-    {
       Header: () => <div>Name {sortBy.id === 'name' ? Arrow : ''}</div>,
       id: 'name',
       minWidth: 200,
-      accessor: d => d.name
+      accessor: d => d.name,
+      Cell: row => <Link to={`streams/${row.original.id}`}>{row.value}</Link>
     },
     {
       Header: 'Url',
@@ -93,7 +85,7 @@ const columns = (sortBy, onStatusChange) => {
     },
     {
       Header: () => (
-        <div>Floor Price {sortBy.id === 'floor_price' ? Arrow : ''}</div>
+        <div>Floor Price {sortBy.id === 'floorPrice' ? Arrow : ''}</div>
       ),
       accessor: 'floorPrice',
       style: {

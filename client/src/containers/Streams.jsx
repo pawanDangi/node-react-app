@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { get } from 'lodash';
 
 import PageHeading from '../components/PageHeading';
 import StreamsHeader from '../components/streams/StreamsHeader';

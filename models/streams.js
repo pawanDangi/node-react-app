@@ -10,7 +10,7 @@ const getStreams = (page, pageSize, search, order) =>
     schemas.Streams.findAndCountAll().then(data => {
       const query = {
         offset: 0,
-        limit: 50
+        limit: 50,
       };
       if (pageSize) {
         query.offset = (page || 0) * pageSize;
@@ -25,12 +25,12 @@ const getStreams = (page, pageSize, search, order) =>
             { name: { [Op.like]: `%${search}%` } },
             { floorPrice: { [Op.like]: `%${search}%` } },
             { type: { [Op.like]: `%${search}%` } },
-            { format: { [Op.like]: `%${search}%` } }
-          ]
+            { format: { [Op.like]: `%${search}%` } },
+          ],
         };
       }
       query.include = [
-        { association: 'markups', attributes: ['id', 'type', 'value'] }
+        { association: 'markups', attributes: ['id', 'type', 'value'] },
       ];
 
       const total = data.count;
@@ -48,7 +48,7 @@ const getStreams = (page, pageSize, search, order) =>
             nextPage,
             total,
             pageSize: query.limit,
-            streams
+            streams,
           })
         )
         .catch(err => {
@@ -65,8 +65,8 @@ const getStream = id =>
     } else {
       schemas.Streams.findByPk(id, {
         include: [
-          { association: 'markups', attributes: ['id', 'type', 'value'] }
-        ]
+          { association: 'markups', attributes: ['id', 'type', 'value'] },
+        ],
       })
         .then(stream => resolve(stream))
         .catch(err => {
@@ -104,7 +104,7 @@ const deleteStream = id =>
     schemas.Streams.update({ deletedAt: new Date() }, { where: { id } })
       .then(() => {
         resolve({
-          message: 'Stream deleted successfully'
+          message: 'Stream deleted successfully',
         });
       })
       .catch(err => {

@@ -19,14 +19,15 @@ import {
 
 const getStreamsController = async (req, res) => {
   const { page, pageSize, search, orderBy } = req.query;
-  let order = [];
-  if (orderBy && orderBy.indexOf('-') === 0) {
-    order = [orderBy.replace('-', ''), 'DESC'];
-  }
+  let orderType = 'ASC';
+  let orderKey = 'id';
   if (orderBy) {
-    order = [orderBy, 'ASC'];
+    if (orderBy.indexOf('-') === 0) {
+      orderType = 'DESC';
+    }
+    orderKey = orderBy.replace('-', '');
   }
-
+  const order = [orderKey, orderType];
   try {
     const streams = await getStreams(
       Number(page),

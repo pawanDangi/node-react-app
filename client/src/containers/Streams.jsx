@@ -31,6 +31,7 @@ class Streams extends Component {
   }
 
   fetchStreamsData = async () => {
+    loader(true);
     this.setState({ loading: true });
     const {
       cookies: { epasso }
@@ -38,10 +39,10 @@ class Streams extends Component {
     const { page, pageSize, sortBy, search } = this.state;
     const sortString = sortBy[0].desc ? `-${sortBy[0].id}` : sortBy[0].id;
     const res = await fetchStreams(epasso, page, pageSize, sortString, search);
-    this.setState({
-      loading: false,
-      streams: res || [],
-      pages: Math.ceil((get(res, 'data.total_count') || 0) / pageSize)
+    this.setState({ loading: false, ...res }, () => {
+      setInterval(() => {
+        loader(false);
+      }, 2000);
     });
   };
 
@@ -88,7 +89,9 @@ class Streams extends Component {
         loader(true);
         await updateStream(epasso, id, { status: !status });
         this.fetchStreamsData();
-        loader(false);
+        setInterval(() => {
+          loader(false);
+        }, 2000);
       }
     });
   };

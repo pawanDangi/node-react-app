@@ -1,3 +1,5 @@
+import { isEmpty } from 'lodash';
+
 // Streams Models
 import {
   getStreams,
@@ -8,7 +10,12 @@ import {
 } from '../models/streams';
 
 // Markups Models
-import { createMarkup } from '../models/markups';
+import {
+  getMarkupByStreamId,
+  createMarkup,
+  updateMarkup,
+  deleteMarkup,
+} from '../models/markups';
 
 const getStreamsController = async (req, res) => {
   const { page, pageSize, search, orderBy } = req.query;
@@ -40,6 +47,9 @@ const getStreamController = async (req, res) => {
 
   try {
     const stream = await getStream(id);
+    if (!stream) {
+      res.status(404).json('stream not found.');
+    }
     res.status(200).json(stream);
   } catch (err) {
     res.status(500).send({
@@ -50,31 +60,73 @@ const getStreamController = async (req, res) => {
 
 const createStreamController = async (req, res) => {
   const {
-    query: { markups, ...streamData },
+    body: { markup, ...streamData },
   } = req;
 
   try {
-    let stream = await createStream(streamData);
-    if (markups) {
-      try {
-        await createMarkup(stream.id, markups);
-      } catch (e) {
-        console.log(e);
+    if (isEmpty(streamData)) {
+      res.status(400).json('empty stream data set');
+    }
+    if (streamData.id) {
+      res.status(400).json('stream id is auto generated');
+    }
+    if (markup) {
+      if (markup.id) {
+        res.status(400).json('markup id is auto generated');
+      }
+      if (['frequency', 'slot', 'preRoll'].indexOf(markup.type) === -1) {
+        res
+          .status(400)
+          .json('markup should be either frequency, slot or preRoll');
       }
     }
+
+    let stream = await createStream(streamData);
+    await createMarkup(stream.id, markup);
+
     stream = await getStream(stream.id);
-    res.status(200).json(stream);
+    res.status(201).json(stream);
   } catch (err) {
     res.status(400).json(err.errors[0].message.replace('Streams.', ''));
   }
 };
 
 const updateStreamController = async (req, res) => {
-  const { body } = req;
+  const {
+    body: { markup, ...streamData },
+  } = req;
   const { id } = req.params;
 
   try {
-    const stream = await updateStream(id, body);
+    let stream = await getStream(id);
+    if (!stream) {
+      res.status(404).json('stream not found.');
+    }
+    if (streamData && streamData.id) {
+      res.status(400).json(`can't update stream id`);
+    }
+    if (!isEmpty(markup)) {
+      if (markup.id) {
+        res.status(400).json(`can't update stream id`);
+      }
+      if (['frequency', 'slot', 'preRoll'].indexOf(markup.type) === -1) {
+        res
+          .status(400)
+          .json('markup should be either frequency, slot or preRoll');
+      }
+      try {
+        const m = await getMarkupByStreamId(id);
+        if (!isEmpty(m)) {
+          await updateMarkup(id, markup);
+        } else {
+          await createMarkup(id, markup);
+        }
+      } catch (e) {
+        res.status(400).json(e.errors[0].message.replace('Markups.', ''));
+      }
+    }
+
+    stream = await updateStream(id, streamData);
     res.status(200).json(stream);
   } catch (err) {
     res.status(400).json(err.errors[0].message.replace('Streams.', ''));
@@ -85,7 +137,12 @@ const deleteStreamController = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const stream = await deleteStream(id);
+    let stream = await getStream(id);
+    if (!stream) {
+      res.status(404).json('stream not found.');
+    }
+    await deleteMarkup(id);
+    stream = await deleteStream(id);
     res.status(200).json(stream);
   } catch (err) {
     res.status(400).json(err.errors[0].message);

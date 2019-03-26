@@ -9,6 +9,7 @@ const Streams = (sequelize, DataTypes) =>
         primaryKey: true,
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
+        noUpdate: true,
       },
       partner: {
         type: Sequelize.INTEGER,
@@ -72,6 +73,8 @@ const Streams = (sequelize, DataTypes) =>
       freezeTableName: true,
       tableName: 'streams',
       paranoid: true,
+      version: true,
+      sequelize,
     }
   );
 

@@ -69,13 +69,9 @@ const createStream = data =>
 const updateStream = (id, data) =>
   new Promise((resolve, reject) => {
     schemas.Streams.update({ ...data }, { where: { id } })
-      .then(() => {
-        schemas.Streams.findByPk(id)
-          .then(stream => resolve(stream))
-          .catch(err => {
-            console.log(err);
-            reject(err);
-          });
+      .then(async () => {
+        const stream = await getStream(id);
+        resolve(stream);
       })
       .catch(err => {
         console.log(err);

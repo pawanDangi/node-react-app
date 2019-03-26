@@ -9,23 +9,29 @@ const Markups = (sequelize, DataTypes) =>
         primaryKey: true,
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
+        noUpdate: true,
       },
       type: {
         type: Sequelize.ENUM,
         values: ['frequency', 'slot', 'preRoll'],
+        defaultValue: 'slot',
       },
       value: {
         type: Sequelize.STRING,
-        allowNull: false,
         get() {
-          console.log(this.getDataValue('value'), 'hello');
           return (
             this.getDataValue('value') && JSON.parse(this.getDataValue('value'))
           );
         },
         set(val) {
-          this.setDataValue('value', JSON.stringify(val));
+          this.setDataValue('value', JSON.stringify(val || ''));
         },
+      },
+      createdBy: {
+        type: Sequelize.INTEGER,
+      },
+      updatedBy: {
+        type: Sequelize.INTEGER,
       },
     },
     {
@@ -33,6 +39,8 @@ const Markups = (sequelize, DataTypes) =>
       freezeTableName: true,
       tableName: 'markups',
       paranoid: true,
+      version: true,
+      sequelize,
     }
   );
 

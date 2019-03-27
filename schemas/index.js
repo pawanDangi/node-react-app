@@ -42,9 +42,20 @@ Object.keys(db).forEach(modelName => {
   }
 });
 
-// Streams to Markups relationship
-db.Streams.hasOne(db.Markups, { as: 'markup', foreignKey: 'streamId' });
-db.Markups.belongsTo(db.Streams, { foreignKey: 'streamId' });
+// associations
+fs.readdirSync(`${__dirname}/associations`)
+  .filter(
+    file =>
+      file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
+  )
+  .forEach(async file => {
+    /* eslint-disable global-require */
+    const re = require(`./associations/${file}`); // eslint-disable-line import/no-dynamic-require
+    /* eslint-enable global-require */
+    if (re && re.default) {
+      re.default(db);
+    }
+  });
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

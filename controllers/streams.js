@@ -6,7 +6,7 @@ import {
   getStream,
   createStream,
   updateStream,
-  deleteStream,
+  deleteStream
 } from '../models/streams';
 
 // Markups Models
@@ -14,8 +14,11 @@ import {
   getMarkupByStreamId,
   createMarkupByStreamId,
   updateMarkupByStreamId,
-  deleteMarkupByStreamId,
+  deleteMarkupByStreamId
 } from '../models/markups';
+
+// Markup redis
+import { setMarkup } from '../redis/streams';
 
 const getStreamsController = async (req, res) => {
   const { page, pageSize, search, orderBy } = req.query;
@@ -38,7 +41,7 @@ const getStreamsController = async (req, res) => {
     res.status(200).json(streams);
   } catch (err) {
     res.status(500).send({
-      message: 'Internal Server Error',
+      message: 'Internal Server Error'
     });
   }
 };
@@ -54,14 +57,14 @@ const getStreamController = async (req, res) => {
     res.status(200).json(stream);
   } catch (err) {
     res.status(500).send({
-      message: 'Internal Server Error',
+      message: 'Internal Server Error'
     });
   }
 };
 
 const createStreamController = async (req, res) => {
   const {
-    body: { markup, ...streamData },
+    body: { markup, ...streamData }
   } = req;
 
   try {
@@ -86,6 +89,12 @@ const createStreamController = async (req, res) => {
     await createMarkupByStreamId(stream.id, markup);
 
     stream = await getStream(stream.id);
+
+    try {
+      await setMarkup(stream);
+    } catch (e) {
+      console.log(e);
+    }
     res.status(201).json(stream);
   } catch (err) {
     res.status(400).json(err.errors[0].message.replace('Streams.', ''));
@@ -94,7 +103,7 @@ const createStreamController = async (req, res) => {
 
 const updateStreamController = async (req, res) => {
   const {
-    body: { markup, ...streamData },
+    body: { markup, ...streamData }
   } = req;
   const { id } = req.params;
 
@@ -155,5 +164,5 @@ export {
   getStreamController,
   createStreamController,
   updateStreamController,
-  deleteStreamController,
+  deleteStreamController
 };

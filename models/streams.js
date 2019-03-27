@@ -62,7 +62,8 @@ const createStream = async data => {
 };
 
 const updateStream = async (id, data) => {
-  const res = await schemas.Streams.update({ ...data }, { where: { id } });
+  await schemas.Streams.update({ ...data }, { where: { id } });
+  const res = await getStream(id);
   return res;
 };
 

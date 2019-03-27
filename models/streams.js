@@ -30,7 +30,7 @@ const getStreams = (page, pageSize, search, order) =>
         };
       }
       query.include = [
-        { association: 'markups', attributes: ['id', 'type', 'value'] },
+        { association: 'markup', attributes: ['id', 'type', 'value'] },
       ];
 
       const total = data.count;
@@ -65,7 +65,7 @@ const getStream = id =>
     } else {
       schemas.Streams.findByPk(id, {
         include: [
-          { association: 'markups', attributes: ['id', 'type', 'value'] },
+          { association: 'markup', attributes: ['id', 'type', 'value'] },
         ],
       })
         .then(stream => resolve(stream))

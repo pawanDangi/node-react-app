@@ -43,7 +43,7 @@ Object.keys(db).forEach(modelName => {
 });
 
 // Streams to Markups relationship
-db.Streams.hasOne(db.Markups, { as: 'markups', foreignKey: 'streamId' });
+db.Streams.hasOne(db.Markups, { as: 'markup', foreignKey: 'streamId' });
 db.Markups.belongsTo(db.Streams, { foreignKey: 'streamId' });
 
 db.sequelize = sequelize;

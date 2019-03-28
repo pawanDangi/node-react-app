@@ -1,12 +1,49 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
+import swaggerJSDoc from 'swagger-jsdoc';
 
 import auth from './middlewares/auth';
 import schemas from './schemas';
 import streams from './routes/streams';
 
 const app = express();
+
+// swagger definition
+const swaggerDefinition = {
+  info: {
+    title: 'Node Swagger API',
+    version: '1.0.0',
+    description: 'Demonstrating how to describe a RESTful API with Swagger',
+  },
+  host: '',
+  basePath: '/',
+};
+
+// options for the swagger docs
+const options = {
+  // import swaggerDefinitions
+  swaggerDefinition,
+  // path to the API docs
+  apis: ['./routes/*.js'],
+};
+
+// initialize swagger-jsdoc
+const swaggerSpec = swaggerJSDoc(options);
+
+// serve swagger
+app.get('/swagger.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+
+// Set static folder
+app.use(express.static('swagger/dist'));
+
+// Swagger
+app.get('/api-doc', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'swagger', 'dist', 'index.html'));
+});
 
 // bodyParser middleware
 app.use(bodyParser.json());

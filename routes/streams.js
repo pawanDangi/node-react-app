@@ -48,13 +48,13 @@ router.get('/', getStreamsController);
  * /api/streams/{id}:
  *   get:
  *     tags:
- *       - Stream
+ *       - Streams
  *     description: Returns a single stream
  *     produces:
  *       - application/json
  *     parameters:
  *       - name: id
- *         description: stream id
+ *         description: Stream id
  *         in: path
  *         required: true
  *     responses:
@@ -63,16 +63,68 @@ router.get('/', getStreamsController);
  */
 router.get('/:id', getStreamController);
 
-// @route POST api/streams
-// @desc  Create A Stream
+/**
+ * @swagger
+ * /api/streams/:
+ *   post:
+ *     tags:
+ *       - Streams
+ *     description: Create stream
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: stream
+ *         description: Stream object
+ *         in: body
+ *         required: true
+ *     responses:
+ *       201:
+ *         description: A stream
+ */
 router.post('/', createStreamController);
 
-// @route PATCH api/streams
-// @desc  Update A Stream By ID
+/**
+ * @swagger
+ * /api/streams/{id}:
+ *   patch:
+ *     tags:
+ *       - Streams
+ *     description: Update stream
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         description: Stream id
+ *         in: path
+ *         required: true
+ *       - name: stream
+ *         description: Stream object
+ *         in: body
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: A stream
+ */
 router.patch('/:id', updateStreamController);
 
-// @route DELETE api/streams/:id
-// @desc  Delete Stream By ID
+/**
+ * @swagger
+ * /api/streams/{id}:
+ *   delete:
+ *     tags:
+ *       - Streams
+ *     description: Delete a single stream
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: id
+ *         description: Stream id
+ *         in: path
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: A stream
+ */
 router.delete('/:id', deleteStreamController);
 
 export default router;

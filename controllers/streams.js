@@ -86,7 +86,7 @@ const createStreamController = async (req, res) => {
     }
 
     let stream = await createStream(streamData);
-    await createMarkupByStreamId(stream.id, markup);
+    await createMarkupByStreamId(stream.id, markup || {});
 
     stream = await getStream(stream.id);
 

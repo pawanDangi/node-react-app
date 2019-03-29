@@ -6,9 +6,15 @@ const getAdType = adType => {
   return 2;
 };
 
-const setStream = async data => {
+const getAdConfig = markup => {
+  if (!markup) return '';
+  if (markup.type === 'slot') return 'slot';
+  if (markup.type === 'frequency') return 'frequency';
+  if (markup.type === 'preRoll') return 'preRoll';
+};
+
+const setPartnerStream = data => {
   const partnerKey = `pg:partner:${data.id}`.toLowerCase();
-  const streamKey = `epa:stream:${data.id}`.toLowerCase();
 
   redis.hset(partnerKey, 'pub', (data.partner || '').toString().toLowerCase());
   redis.hset(partnerKey, 'pst', 1);
@@ -22,15 +28,17 @@ const setStream = async data => {
   redis.hset(partnerKey, 'psta', 1);
   redis.hset(partnerKey, 'pgda', 0);
   redis.hset(partnerKey, 'pc', 1);
+};
+
+const setStream = async data => {
+  setPartnerStream(data);
+
+  const streamKey = `epa:stream:${data.id}`.toLowerCase();
 
   redis.hset(streamKey, 'type', (data.type || '').toString().toLowerCase());
   redis.hset(streamKey, 'url', (data.url || '').toString());
-  redis.hset(streamKey, 'adconfig', 'adconfig');
-  return redis.hset(
-    streamKey,
-    'format',
-    (data.format || '').toString().toLowerCase()
-  );
+  redis.hset(streamKey, 'format', (data.format || '').toString().toLowerCase());
+  return redis.hset(streamKey, 'adconfig', getAdConfig(data.markup));
 };
 
 export { setStream };

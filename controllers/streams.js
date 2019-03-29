@@ -20,6 +20,9 @@ import {
 // Markup redis
 import { setStream } from '../redis/streams';
 
+// Markup validation helper
+import isInvalidMarkup from '../helpers/isInvalidMarkup';
+
 const getStreamsController = async (req, res) => {
   const { page, pageSize, search, orderBy } = req.query;
   let orderType = 'ASC';
@@ -78,10 +81,9 @@ const createStreamController = async (req, res) => {
       if (markup.id) {
         res.status(400).json('markup id is auto generated');
       }
-      if (['frequency', 'slot', 'preRoll'].indexOf(markup.type) === -1) {
-        res
-          .status(400)
-          .json('markup should be either frequency, slot or preRoll');
+      const inValidMarkup = isInvalidMarkup(markup);
+      if (inValidMarkup) {
+        res.status(400).json(inValidMarkup);
       }
     }
 
@@ -117,12 +119,11 @@ const updateStreamController = async (req, res) => {
     }
     if (!isEmpty(markup)) {
       if (markup.id) {
-        res.status(400).json(`can't update stream id`);
+        res.status(400).json(`can't update markup id`);
       }
-      if (['frequency', 'slot', 'preRoll'].indexOf(markup.type) === -1) {
-        res
-          .status(400)
-          .json('markup should be either frequency, slot or preRoll');
+      const inValidMarkup = isInvalidMarkup(markup);
+      if (inValidMarkup) {
+        res.status(400).json(inValidMarkup);
       }
       try {
         const m = await getMarkupByStreamId(id);

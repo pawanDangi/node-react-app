@@ -3,6 +3,8 @@ import Sequelize from 'sequelize';
 // Streams Table
 import schemas from '../schemas';
 
+import makeId from '../helpers/makeid';
+
 const { Op } = Sequelize;
 
 const getStreams = async (page, pageSize, search, order) => {
@@ -57,7 +59,12 @@ const getStream = async id => {
 };
 
 const createStream = async data => {
-  const res = await schemas.Streams.create({ ...data });
+  const id = `st-${data.partner}-${makeId()}`;
+  const stream = await getStream(id);
+  if (stream) {
+    await createStream(data);
+  }
+  const res = await schemas.Streams.create({ id, ...data });
   return res;
 };
 

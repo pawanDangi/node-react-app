@@ -5,10 +5,9 @@ const Streams = (sequelize, DataTypes) =>
     'Streams',
     {
       id: {
+        type: Sequelize.STRING,
         allowNull: false,
         primaryKey: true,
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
         noUpdate: true,
       },
       partner: {
@@ -56,6 +55,14 @@ const Streams = (sequelize, DataTypes) =>
       type: {
         type: Sequelize.ENUM,
         values: ['VOD', 'LIVE', 'EVENT'],
+      },
+      adType: {
+        type: Sequelize.ENUM,
+        values: ['video', 'display', 'unknown'],
+      },
+      pdDemand: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: true,
       },
       createdBy: {
         type: Sequelize.INTEGER,

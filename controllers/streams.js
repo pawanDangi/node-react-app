@@ -18,7 +18,7 @@ import {
 } from '../models/markups';
 
 // Markup redis
-import { setMarkup } from '../redis/streams';
+import { setStream } from '../redis/streams';
 
 const getStreamsController = async (req, res) => {
   const { page, pageSize, search, orderBy } = req.query;
@@ -91,7 +91,7 @@ const createStreamController = async (req, res) => {
     stream = await getStream(stream.id);
 
     try {
-      await setMarkup(stream);
+      await setStream(stream);
     } catch (e) {
       console.log(e);
     }

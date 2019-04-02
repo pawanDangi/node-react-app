@@ -7,6 +7,11 @@ import {
   Redirect
 } from 'react-router-dom';
 import AppHeader from './header-footer/HeaderFooter';
+import Login from './containers/Login';
+import ForgotPassword from './containers/ForgotPassword';
+import ResetPassword from './containers/ResetPassword';
+import VerifyPassword from './containers/VerifyPassword';
+import ContactUs from './containers/ContactUs';
 import Dashboard from './containers/Dashboard';
 import Performance from './containers/Performance';
 import Streams from './containers/Streams';
@@ -20,6 +25,11 @@ const Routes = ({ cookies }) => (
     <AppHeader>
       {cookies && cookies.epasso ? (
         <Switch>
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/forgot-password" component={ForgotPassword} />
+          <Route exact path="/reset-password" component={ResetPassword} />
+          <Route exact path="/verify-password" component={VerifyPassword} />
+          <Route exact path="/contact-us" component={ContactUs} />
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/performance" component={Performance} />
           <Route exact path="/streams" component={Streams} />

@@ -10,15 +10,15 @@ const styles = {
     flexDirection: 'column',
     minHeight: '100%',
     alignItems: 'center',
-    background: '#000',
+    background: '#0D47A1',
     '& div': {
-      background: '#000'
+      background: '#0D47A1'
     }
   },
   toolbar: {
     alignItems: 'center',
     justifyContent: 'space-between',
-    background: '#000 !important'
+    background: '#0D47A1 !important'
   }
 };
 

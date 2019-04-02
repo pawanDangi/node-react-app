@@ -52,7 +52,8 @@ const styles = {
     paddingTop: '4px'
   },
   setting: {
-    position: 'absolute'
+    position: 'absolute',
+    borderTop: '1px solid rgba(0, 0, 0, 0.54)'
   },
   desktop: {
     bottom: '70px'

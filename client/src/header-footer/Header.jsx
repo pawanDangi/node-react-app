@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { AppBar, Toolbar, IconButton, Typography } from '@material-ui/core/';
 import { Menu as MenuIcon } from '@material-ui/icons/';
 
+import { primary } from '../utils/colors';
 import pgLogo from '../icons/PG_Axis_Logo.png';
 
 const drawerWidth = 240;
@@ -12,7 +13,7 @@ const drawerWidth = 240;
 const styles = theme => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    backgroundColor: '#0D47A1',
+    backgroundColor: primary.main,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen

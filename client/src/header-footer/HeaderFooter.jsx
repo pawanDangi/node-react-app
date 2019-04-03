@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { CssBaseline, Typography } from '@material-ui/core/';
 
+import { background } from '../utils/colors';
 import Header from './Header';
 import DesktopSideBar from './DesktopSideBar';
 import MobileSideBar from './MobileSideBar';
@@ -18,7 +19,7 @@ const styles = theme => ({
     width: `calc(100% - ${drawerWidth}px)`,
     flexGrow: 1,
     '& div': {
-      background: 'rgb(242, 242, 242)'
+      background: background.default
     }
   },
   toolbar: {

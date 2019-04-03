@@ -11,6 +11,8 @@ import {
   OndemandVideo as DemandIcons
 } from '@material-ui/icons/';
 
+import { background, common, text } from '../utils/colors';
+
 const pages = [
   {
     text: 'Dashboard',
@@ -37,11 +39,11 @@ const pages = [
 
 const styles = {
   list: {
-    height: '100%'
+    height: '100%',
+    background: background.paper
   },
   link: {
     letterSpacing: '1px',
-    color: 'white',
     display: 'flex',
     '&:hover': {
       textDecoration: 'none',
@@ -53,7 +55,7 @@ const styles = {
   },
   setting: {
     position: 'absolute',
-    borderTop: '1px solid rgba(0, 0, 0, 0.54)'
+    borderTop: `1px solid ${text.disabled}`
   },
   desktop: {
     bottom: '70px'
@@ -75,13 +77,11 @@ const AppPages = ({ classes, location, isMobile }) => (
           [classes.mobile]: page.isBottom && isMobile
         })}
       >
-        <NavLink
-          to={page.path}
-          className={classNames(classes.link)}
-          activeStyle={{ color: '#1998db' }}
-        >
+        <NavLink to={page.path} className={classNames(classes.link)}>
           <ListItemIcon
-            style={{ color: location.pathname === page.path ? '#000' : '' }}
+            style={{
+              color: location.pathname === page.path ? common.black : ''
+            }}
           >
             {page.icon}
           </ListItemIcon>

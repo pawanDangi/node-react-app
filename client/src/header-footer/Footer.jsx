@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { withStyles } from '@material-ui/core/styles';
-import { AppBar, Toolbar } from '@material-ui/core/';
+import { AppBar } from '@material-ui/core/';
+
+import { primary } from '../utils/colors';
 
 const styles = {
   appBar: {
@@ -10,26 +12,20 @@ const styles = {
     flexDirection: 'column',
     minHeight: '100%',
     alignItems: 'center',
-    background: '#0D47A1',
+    background: primary.main,
+    padding: '18px 5px',
     '& div': {
-      background: '#0D47A1'
+      background: primary.main
     }
-  },
-  toolbar: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    background: '#0D47A1 !important'
   }
 };
 
 function Footer(props) {
   const { classes } = props;
   return (
-    <AppBar position="absolute" color="primary" className={classes.appBar}>
-      <Toolbar className={classes.toolbar}>
-        &#9400; Copyright {moment().format('YYYY')} Intertrust Technologies
-        Corporation. All rights reserved.
-      </Toolbar>
+    <AppBar position="absolute" className={classes.appBar}>
+      &#9400; Copyright {moment().format('YYYY')} Intertrust Technologies
+      Corporation. All rights reserved.
     </AppBar>
   );
 }

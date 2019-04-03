@@ -3,11 +3,13 @@ import { withStyles } from '@material-ui/core/styles';
 import { Paper, TextField, Typography, Button } from '@material-ui/core/';
 import { NavLink } from 'react-router-dom';
 
+import { background, primary, text, secondary } from '../utils/colors';
+
 const styles = theme => ({
   root: {
     textAlign: 'center',
     '& div': {
-      background: '#fff'
+      background: background.paper
     }
   },
   page: {
@@ -30,7 +32,7 @@ const styles = theme => ({
     display: 'inline-block'
   },
   heading: {
-    color: '#0D47A1',
+    color: primary.main,
     padding: '20px 0',
     borderBottom: '3px solid'
   },
@@ -47,26 +49,35 @@ const styles = theme => ({
   login: {
     margin: theme.spacing.unit,
     lineHeight: '35px',
-    background: '#0D47A1'
+    background: primary.main,
+    '&:hover': {
+      background: primary.dark
+    }
   },
   or: {
     width: '100%',
     textAlign: 'center',
-    borderBottom: '1px solid rgba(0, 0, 0, 0.54)',
+    borderBottom: `1px solid ${text.disabled}`,
     lineHeight: '0.1em',
     margin: '10px 0 20px',
     paddingTop: '15px',
     fontSize: '15px',
     '& span': {
       background: '#fff',
-      color: 'rgba(0, 0, 0, 0.54)',
+      color: `${text.disabled}`,
       padding: '0 10px'
     }
   },
   demo: {
     margin: theme.spacing.unit,
     lineHeight: '35px',
-    marginTop: '8px'
+    marginTop: '8px',
+    color: secondary.main,
+    border: `1px solid ${secondary.main}`,
+    '&:hover': {
+      color: secondary.dark,
+      border: `1px solid ${secondary.dark}`
+    }
   }
 });
 

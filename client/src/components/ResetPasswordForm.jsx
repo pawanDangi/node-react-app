@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Paper, TextField, Typography, Button } from '@material-ui/core/';
 
+import { background, primary } from '../utils/colors';
+
 const styles = theme => ({
   root: {
     textAlign: 'center',
     '& div': {
-      background: '#fff'
+      background: background.paper
     }
   },
   page: {
@@ -29,7 +31,7 @@ const styles = theme => ({
     display: 'inline-block'
   },
   heading: {
-    color: '#0D47A1',
+    color: primary.main,
     padding: '20px 0',
     borderBottom: '3px solid'
   },
@@ -48,7 +50,10 @@ const styles = theme => ({
   submit: {
     margin: theme.spacing.unit,
     lineHeight: '35px',
-    background: '#0D47A1'
+    background: primary.main,
+    '&:hover': {
+      background: primary.dark
+    }
   }
 });
 

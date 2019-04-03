@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Paper, Typography, TextField, Button } from '@material-ui/core/';
 
+import { background, primary, text } from '../utils/colors';
+
 const styles = theme => ({
   root: {
     textAlign: 'center',
     '& div': {
-      background: '#fff'
+      background: background.paper
     }
   },
   page: {
@@ -29,7 +31,7 @@ const styles = theme => ({
     display: 'inline-block'
   },
   heading: {
-    color: '#0D47A1',
+    color: primary.main,
     padding: '20px 0',
     borderBottom: '3px solid'
   },
@@ -41,7 +43,7 @@ const styles = theme => ({
   info: {
     padding: '22px 0px',
     fontSize: '16px',
-    color: 'rgba(0, 0, 0, 0.54)'
+    color: text.disabled
   },
   form: {
     padding: '10px 0px',
@@ -54,7 +56,10 @@ const styles = theme => ({
   forgot: {
     margin: '10px 0px',
     lineHeight: '35px',
-    background: '#0D47A1'
+    background: primary.main,
+    '&:hover': {
+      background: primary.dark
+    }
   }
 });
 

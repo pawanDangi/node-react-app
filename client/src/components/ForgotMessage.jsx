@@ -3,11 +3,13 @@ import { withStyles } from '@material-ui/core/styles';
 import { Paper, Typography } from '@material-ui/core/';
 import { NavLink } from 'react-router-dom';
 
+import { background, primary, text } from '../utils/colors';
+
 const styles = theme => ({
   root: {
     textAlign: 'center',
     '& div': {
-      background: '#fff'
+      background: background.paper
     }
   },
   page: {
@@ -30,7 +32,7 @@ const styles = theme => ({
     display: 'inline-block'
   },
   heading: {
-    color: '#0D47A1',
+    color: primary.main,
     padding: '20px 0',
     borderBottom: '3px solid'
   },
@@ -45,7 +47,7 @@ const styles = theme => ({
   info: {
     padding: '22px 0px',
     fontSize: '16px',
-    color: 'rgba(0, 0, 0, 0.54)'
+    color: text.disabled
   },
   link: {
     padding: '22px 0px',

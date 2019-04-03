@@ -12,11 +12,13 @@ import {
 import { Add as AddIcon } from '@material-ui/icons/';
 import className from 'class-names';
 
+import { background, text, primary } from '../../utils/colors';
+
 const styles = theme => ({
   root: {
     marginTop: '30px',
     '& div': {
-      background: '#fff'
+      background: background.paper
     }
   },
   page: {
@@ -40,13 +42,13 @@ const styles = theme => ({
     padding: '15px !important'
   },
   heading: {
-    borderBottom: '2px solid rgba(0, 0, 0, 0.2)',
+    borderBottom: `2px solid ${text.disabled}`,
     paddingBottom: 20,
     fontSize: '18px'
   },
   title: {
     padding: '10px 0px !important',
-    color: '#1565C0',
+    color: primary.light,
     fontWeight: 600,
     fontSize: '18px'
   },
@@ -67,27 +69,45 @@ const styles = theme => ({
     display: 'flex'
   },
   validateBtn: {
-    background: '#0D47A1',
-    color: '#fff'
+    background: primary.main,
+    color: primary.contrastText,
+    '&:hover': {
+      background: primary.dark
+    },
+    '&:focus': {
+      textDecoration: 'none',
+      outline: 'none'
+    }
   },
   addMarker: {
-    background: '#0D47A1',
-    color: '#fff'
+    background: primary.main,
+    color: primary.contrastText,
+    '&:hover': {
+      background: primary.dark
+    },
+    '&:focus': {
+      textDecoration: 'none',
+      outline: 'none'
+    }
   },
-  timeBtn: {
-    width: '35%'
+  timeInput: {
+    width: '50px',
+    marginRight: '5px'
+  },
+  timeTxt: {
+    paddingRight: '5px'
   },
   or: {
     width: '100%',
     textAlign: 'center',
-    borderBottom: '1px solid rgba(0, 0, 0, 0.54)',
+    borderBottom: `1px solid ${text.disabled}`,
     lineHeight: '0.1em',
     margin: '10px 0 20px',
     paddingTop: '15px',
     fontSize: '15px',
     '& span': {
-      background: '#fff',
-      color: 'rgba(0, 0, 0, 0.54)',
+      background: primary.contrastText,
+      color: `${text.disabled}`,
       padding: '0 10px'
     }
   }
@@ -223,14 +243,18 @@ class StreamForm extends Component {
               <Grid item md={8} xs={10} className={classes.grid}>
                 <Grid container spacing={8}>
                   <Grid item xs={6} className={classes.grid}>
-                    <Typography variant="subheading" component="p">
+                    <Typography
+                      className={classes.timeTxt}
+                      variant="subheading"
+                      component="p"
+                    >
                       START
                     </Typography>
                     <TextField
                       id="ep-markers-start-min-input"
                       variant="outlined"
                       fullWidth
-                      className={classes.timeBtn}
+                      className={classes.timeInput}
                       label="min"
                       type="number"
                       margin="dense"
@@ -239,21 +263,25 @@ class StreamForm extends Component {
                       id="ep-markers-start-sec-input"
                       variant="outlined"
                       fullWidth
-                      className={classes.timeBtn}
+                      className={classes.timeInput}
                       label="sec"
                       type="number"
                       margin="dense"
                     />
                   </Grid>
                   <Grid item xs={6} className={classes.grid}>
-                    <Typography variant="subheading" component="p">
+                    <Typography
+                      className={classes.timeTxt}
+                      variant="subheading"
+                      component="p"
+                    >
                       DURATION
                     </Typography>
                     <TextField
                       id="ep-markers-duration-sec-input"
                       variant="outlined"
                       fullWidth
-                      className={classes.timeBtn}
+                      className={classes.timeInput}
                       type="number"
                       label="sec"
                       margin="dense"
@@ -282,28 +310,36 @@ class StreamForm extends Component {
               <Grid item md={8} xs={10} className={classes.grid}>
                 <Grid container spacing={8}>
                   <Grid item xs={6} className={classes.grid}>
-                    <Typography variant="subheading" component="p">
+                    <Typography
+                      className={classes.timeTxt}
+                      variant="subheading"
+                      component="p"
+                    >
                       EVERY
                     </Typography>
                     <TextField
                       id="ep-markers-every-min-input"
                       variant="outlined"
                       fullWidth
-                      className={classes.timeBtn}
+                      className={classes.timeInput}
                       label="min"
                       type="number"
                       margin="dense"
                     />
                   </Grid>
                   <Grid item xs={6} className={classes.grid}>
-                    <Typography variant="subheading" component="p">
+                    <Typography
+                      className={classes.timeTxt}
+                      variant="subheading"
+                      component="p"
+                    >
                       DURATION
                     </Typography>
                     <TextField
                       id="ep-markers-every-duration-sec-input"
                       variant="outlined"
                       fullWidth
-                      className={classes.timeBtn}
+                      className={classes.timeInput}
                       label="sec"
                       type="number"
                       margin="dense"

@@ -1,100 +1,68 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import classNames from 'classnames';
-import { Paper, Grid, TextField, Fab, Tooltip } from '@material-ui/core/';
-import AddIcon from '@material-ui/icons/Add';
+import { Grid, Typography, TextField, Button } from '@material-ui/core/';
+import {
+  Settings as SettingsIcon,
+  FilterList as FilterIcon,
+  Add as AddIcon
+} from '@material-ui/icons';
+import className from 'class-names';
 import { Link } from 'react-router-dom';
 
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-    padding: '10px 0px'
-  },
-  grid: {
-    alignItems: 'center'
-  },
-  paper: {
-    ...theme.mixins.gutters(),
-    paddingTop: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit,
-    color: theme.palette.text.secondary,
-    boxShadow: 'none'
-  },
-  createStream: {
-    textAlign: 'left'
-  },
-  button: {
-    margin: 0,
-    backgroundColor: '#1656a0',
-    '&:hover': {
-      textDecoration: 'none',
-      color: 'inherit',
-      backgroundColor: '#1656a0'
-    }
-  },
-  serachArea: {
-    textAlign: 'right'
-  },
-  textField: {
-    margin: 0,
-    height: '36px',
-    '& label': {
-      top: '-6px'
-    },
-    '& div': {
-      background: '#fff'
-    }
-  }
-});
+import styles from '../../css/streams/streams-header';
 
 function StreamsHeader(props) {
   const { classes, onSearch } = props;
 
   return (
-    <div className={classes.root}>
-      <Grid container spacing={0} className={classes.grid}>
-        <Grid item xs={3}>
-          <Paper className={classNames(classes.paper, classes.createStream)}>
-            <Tooltip title="Create Stream" aria-label="Create Stream">
-              <Fab
-                component={Link}
-                size="small"
-                to="streams/create"
-                color="primary"
-                aria-label="Add"
-                className={classes.button}
-              >
-                <AddIcon />
-              </Fab>
-            </Tooltip>
-          </Paper>
-        </Grid>
-        <Grid item xs={9}>
-          <Paper className={classNames(classes.paper, classes.serachArea)}>
-            <TextField
-              id="outlined-dense"
-              label="Search Here"
-              className={classes.textField}
-              margin="dense"
-              variant="outlined"
-              onChange={onSearch}
-            />
-          </Paper>
-        </Grid>
+    <Grid container spacing={0}>
+      <Grid className={classes.heading} item>
+        <Typography variant="h5" component="h3">
+          Inventory
+        </Typography>
+        <Typography component="p" className={classes.subHeading}>
+          List of stream inventory (107).
+        </Typography>
       </Grid>
-    </div>
+      <Grid className={className(classes.grid, classes.search)} item>
+        <TextField
+          id="outlined-dense"
+          label="Search stream..."
+          margin="dense"
+          variant="outlined"
+          className={classes.searchInput}
+          onChange={onSearch}
+        />
+      </Grid>
+      <Grid className={className(classes.grid, classes.setting)} item>
+        <Button variant="outlined" className={classes.icon}>
+          <SettingsIcon fontSize="large" />
+        </Button>
+      </Grid>
+      <Grid className={className(classes.grid, classes.filter)} item>
+        <Button variant="outlined" className={classes.icon}>
+          <FilterIcon fontSize="large" />
+        </Button>
+      </Grid>
+      <Grid className={className(classes.grid, classes.add)} item>
+        <Button
+          variant="outlined"
+          component={Link}
+          to="streams/create"
+          className={className(classes.icon, classes.addStream)}
+          size="large"
+        >
+          <AddIcon /> <span className={classes.addText}>Register Stream</span>
+        </Button>
+      </Grid>
+    </Grid>
   );
 }
 
 StreamsHeader.propTypes = {
   classes: PropTypes.shape({
-    root: PropTypes.string.isRequired,
-    paper: PropTypes.string.isRequired,
-    createStream: PropTypes.string.isRequired,
-    button: PropTypes.string.isRequired,
-    serachArea: PropTypes.string.isRequired,
-    textField: PropTypes.string.isRequired
+    root: PropTypes.string.isRequired
   }).isRequired
 };
 

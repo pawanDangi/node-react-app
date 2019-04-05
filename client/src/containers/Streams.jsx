@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import PageHeading from '../components/PageHeading';
 import StreamsHeader from '../components/streams/StreamsHeader';
 import StreamTable from '../components/streams/StreamTable';
+import PaperMain from '../components/PaperMain';
 import { fetchStreams, updateStream } from '../api/streams';
 import columns from '../columns/Streams';
 import alert from '../utils/alert';
@@ -99,16 +99,17 @@ class Streams extends Component {
     const { streams, loading, pages, pageSize, sortBy } = this.state;
     return (
       <div>
-        <PageHeading title="Streams" />
-        <StreamsHeader onSearch={this.onSearch} />
-        <StreamTable
-          data={streams}
-          defaultPageSize={pageSize}
-          columns={columns(sortBy[0], this.onStatusChange)}
-          pages={pages}
-          loading={loading}
-          onFetchData={this.onFetchData}
-        />
+        <PaperMain>
+          <StreamsHeader onSearch={this.onSearch} />
+          <StreamTable
+            data={streams}
+            defaultPageSize={pageSize}
+            columns={columns(sortBy[0], this.onStatusChange)}
+            pages={pages}
+            loading={loading}
+            onFetchData={this.onFetchData}
+          />
+        </PaperMain>
       </div>
     );
   }

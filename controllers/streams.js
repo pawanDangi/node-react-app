@@ -6,7 +6,7 @@ import {
   getStream,
   createStream,
   updateStream,
-  deleteStream,
+  deleteStream
 } from '../models/streams';
 
 // Markups Models
@@ -14,7 +14,7 @@ import {
   getMarkupByStreamId,
   createMarkupByStreamId,
   updateMarkupByStreamId,
-  deleteMarkupByStreamId,
+  deleteMarkupByStreamId
 } from '../models/markups';
 
 // Markup redis
@@ -44,7 +44,7 @@ const getStreamsController = async (req, res) => {
     res.status(200).json(streams);
   } catch (err) {
     res.status(500).send({
-      message: 'Internal Server Error',
+      message: 'Internal Server Error'
     });
   }
 };
@@ -60,14 +60,14 @@ const getStreamController = async (req, res) => {
     res.status(200).json(stream);
   } catch (err) {
     res.status(500).send({
-      message: 'Internal Server Error',
+      message: 'Internal Server Error'
     });
   }
 };
 
 const createStreamController = async (req, res) => {
   const {
-    body: { markup, ...streamData },
+    body: { markup, ...streamData }
   } = req;
 
   try {
@@ -77,6 +77,25 @@ const createStreamController = async (req, res) => {
     if (streamData.id) {
       res.status(400).json('stream id is auto generated');
     }
+    if (
+      streamData.format &&
+      ['HLS', 'DASH'].indexOf(streamData.format) === -1
+    ) {
+      res.status(400).json('format should be HLS or DASH only');
+    }
+    if (
+      streamData.type &&
+      ['VOD', 'LIVE', 'EVENT'].indexOf(streamData.type) === -1
+    ) {
+      res.status(400).json('type should be VOD, LIVE or EVENT only');
+    }
+    if (
+      streamData.adType &&
+      ['video', 'display', 'unknown'].indexOf(streamData.adType) === -1
+    ) {
+      res.status(400).json('ad type should be video, display or unknown only');
+    }
+
     if (markup) {
       if (markup.id) {
         res.status(400).json('markup id is auto generated');
@@ -105,7 +124,7 @@ const createStreamController = async (req, res) => {
 
 const updateStreamController = async (req, res) => {
   const {
-    body: { markup, ...streamData },
+    body: { markup, ...streamData }
   } = req;
   const { id } = req.params;
 
@@ -165,5 +184,5 @@ export {
   getStreamController,
   createStreamController,
   updateStreamController,
-  deleteStreamController,
+  deleteStreamController
 };

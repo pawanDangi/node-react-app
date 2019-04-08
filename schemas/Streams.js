@@ -1,6 +1,6 @@
 import Sequelize from 'sequelize';
 
-const Streams = (sequelize, DataTypes) =>
+const Streams = sequelize =>
   sequelize.define(
     'Streams',
     {

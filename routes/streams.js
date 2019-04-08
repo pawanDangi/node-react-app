@@ -7,6 +7,7 @@ import {
   createStreamController,
   updateStreamController,
   deleteStreamController,
+  validateStreamController,
 } from '../controllers/streams';
 
 const router = express.Router();
@@ -126,5 +127,25 @@ router.patch('/:id', updateStreamController);
  *         description: A stream
  */
 router.delete('/:id', deleteStreamController);
+
+/**
+ * @swagger
+ * /api/streams/validate:
+ *   post:
+ *     tags:
+ *       - Streams
+ *     description: Validate stream
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: url
+ *         description: Stream Url
+ *         in: body
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Stream details
+ */
+router.post('/validate', validateStreamController);
 
 export default router;

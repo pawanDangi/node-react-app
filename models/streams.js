@@ -8,7 +8,6 @@ import makeId from '../helpers/makeid';
 const { Op } = Sequelize;
 
 const getStreams = async (page, pageSize, search, order) => {
-  const data = await schemas.Streams.findAndCountAll();
   const query = {
     offset: 0,
     limit: 50,
@@ -34,6 +33,7 @@ const getStreams = async (page, pageSize, search, order) => {
     { association: 'markup', attributes: ['id', 'type', 'value'] },
   ];
 
+  const data = await schemas.Streams.findAndCountAll({ where: query.where });
   const total = data.count;
   const pages = Math.ceil(total / query.limit);
   const prevPage =

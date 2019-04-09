@@ -1,11 +1,10 @@
 import React from 'react';
-import moment from 'moment';
 import { Grid, Switch } from '@material-ui/core/';
 import { FileCopy, ArrowDropUp, ArrowDropDown } from '@material-ui/icons/';
 import { Link } from 'react-router-dom';
 
-import { dateFormat } from '../const';
 import copyToClipboard from '../utils/copy-to-clipboard';
+import timeSince from '../utils/time-since';
 
 const columns = (sortBy, onStatusChange) => {
   const Arrow = sortBy.desc ? <ArrowDropUp /> : <ArrowDropDown />;
@@ -14,7 +13,13 @@ const columns = (sortBy, onStatusChange) => {
       Header: () => <div>Name {sortBy.id === 'name' ? Arrow : ''}</div>,
       id: 'name',
       minWidth: 200,
-      accessor: d => d.name,
+      accessor: d => d.name
+    },
+    {
+      Header: () => <div>Id {sortBy.id === 'id' ? Arrow : ''}</div>,
+      id: 'id',
+      minWidth: 200,
+      accessor: d => d.id,
       Cell: row => <Link to={`streams/${row.original.id}`}>{row.value}</Link>
     },
     {
@@ -43,7 +48,7 @@ const columns = (sortBy, onStatusChange) => {
       )
     },
     {
-      Header: 'SSAI Url',
+      Header: 'DAI Url',
       accessor: 'daiUrl',
       sortable: false,
       minWidth: 300,
@@ -67,16 +72,8 @@ const columns = (sortBy, onStatusChange) => {
         </Grid>
       )
     },
-    {
-      Header: 'Type',
-      accessor: 'type',
-      sortable: false
-    },
-    {
-      Header: 'Format',
-      accessor: 'format',
-      sortable: false
-    },
+    { Header: 'Type', accessor: 'type', sortable: false },
+    { Header: 'Format', accessor: 'format', sortable: false },
     {
       Header: 'Tags',
       id: 'tags',
@@ -88,17 +85,13 @@ const columns = (sortBy, onStatusChange) => {
         <div>Floor Price {sortBy.id === 'floorPrice' ? Arrow : ''}</div>
       ),
       accessor: 'floorPrice',
-      style: {
-        textAlign: 'center'
-      },
+      style: { textAlign: 'center' },
       minWidth: 150
     },
     {
       Header: () => <div>Status {sortBy.id === 'status' ? Arrow : ''}</div>,
       id: 'status',
-      style: {
-        textAlign: 'center'
-      },
+      style: { textAlign: 'center' },
       accessor: d => (
         <Switch
           key={`${d.id}-${d.name}`}
@@ -114,24 +107,11 @@ const columns = (sortBy, onStatusChange) => {
     },
     {
       Header: () => (
-        <div>Created At {sortBy.id === 'createdAt' ? Arrow : ''}</div>
-      ),
-      id: 'createdAt',
-      accessor: d => moment(d.createdAt).format(dateFormat),
-      style: {
-        textAlign: 'center'
-      },
-      minWidth: 200
-    },
-    {
-      Header: () => (
-        <div>Updated At {sortBy.id === 'updatedAt' ? Arrow : ''}</div>
+        <div>Updated On {sortBy.id === 'updatedAt' ? Arrow : ''}</div>
       ),
       id: 'updatedAt',
-      accessor: d => moment(d.updatedAt).format(dateFormat),
-      style: {
-        textAlign: 'center'
-      },
+      accessor: d => timeSince(d.updatedAt),
+      style: { textAlign: 'center' },
       minWidth: 200
     }
   ];

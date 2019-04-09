@@ -10,7 +10,7 @@ const styles = {
   appBar: {
     display: 'flex',
     flexDirection: 'column',
-    height: '60px',
+    height: '25px',
     alignItems: 'flex-end',
     background: primary.dark,
     padding: '2px 5px',

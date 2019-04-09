@@ -1,9 +1,9 @@
 import moment from 'moment';
 
 const timeSince = date => {
-  const seconds = Math.floor((moment(new Date()) - moment(date)) / 1000);
+  const seconds = Math.ceil((moment(new Date()) - moment(date)) / 1000);
 
-  let interval = Math.floor(seconds / 3600);
+  let interval = Math.ceil(seconds / 3600);
   if (interval > 1 && interval <= 23) {
     return `${interval} hours ago`;
   }
@@ -14,11 +14,11 @@ const timeSince = date => {
     return moment(date).format('MMM DD, YYYY');
   }
 
-  interval = Math.floor(seconds / 60);
+  interval = Math.ceil(seconds / 60);
   if (interval > 1) {
     return `${interval} minutes ago`;
   }
-  return `${Math.floor(seconds)} seconds ago`;
+  return `${Math.ceil(seconds)} seconds ago`;
 };
 
 export default timeSince;

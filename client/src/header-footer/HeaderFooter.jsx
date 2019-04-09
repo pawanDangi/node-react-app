@@ -64,7 +64,6 @@ class AppHeader extends React.Component {
 
   updateHeight = () => {
     const minHeight = `${window.innerHeight - 36}px`;
-    console.log(minHeight);
     this.setState({ minHeight });
   };
 

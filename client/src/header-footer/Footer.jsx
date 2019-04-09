@@ -11,9 +11,10 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     minHeight: '100%',
-    alignItems: 'center',
-    background: primary.main,
-    padding: '18px 5px',
+    alignItems: 'flex-end',
+    background: primary.dark,
+    padding: '2px 5px',
+    fontSize: '12px',
     '& div': {
       background: primary.main
     }

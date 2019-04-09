@@ -2,7 +2,20 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core/';
 
-import styles from '../css/paper-main';
+const styles = theme => ({
+  root: {
+    marginTop: '30px',
+    '& div': {
+      background: 'none'
+    }
+  },
+  page: {
+    ...theme.mixins.gutters(),
+    width: '98%',
+    margin: '1%',
+    padding: '10px !important'
+  }
+});
 
 class PaperMain extends Component {
   state = {};

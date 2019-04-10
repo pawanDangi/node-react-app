@@ -4,7 +4,6 @@ import { Paper } from '@material-ui/core/';
 
 const styles = theme => ({
   root: {
-    marginTop: '30px',
     '& div': {
       background: 'none'
     }
@@ -12,7 +11,7 @@ const styles = theme => ({
   page: {
     ...theme.mixins.gutters(),
     width: '98%',
-    margin: '1%',
+    margin: '0 1%',
     padding: '10px !important'
   }
 });

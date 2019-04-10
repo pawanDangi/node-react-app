@@ -27,6 +27,7 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: '0 8px',
+    marginBottom: '20px',
     ...theme.mixins.toolbar
   },
   footer: {
@@ -47,7 +48,7 @@ const styles = theme => ({
 class AppHeader extends React.Component {
   state = {
     open: false,
-    minHeight: `${window.innerHeight - 60}px`
+    minHeight: `${window.innerHeight - 50}px`
   };
 
   componentWillMount() {
@@ -63,7 +64,7 @@ class AppHeader extends React.Component {
   }
 
   updateHeight = () => {
-    const minHeight = `${window.innerHeight - 36}px`;
+    const minHeight = `${window.innerHeight - 26}px`;
     this.setState({ minHeight });
   };
 

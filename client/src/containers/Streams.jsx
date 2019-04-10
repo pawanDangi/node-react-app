@@ -83,7 +83,7 @@ class Streams extends Component {
       title: 'Confirm',
       text: `Do you really want to ${
         status ? 'disable' : 'enable'
-      } this stream?`,
+        } this stream?`,
       handleSuccess: async () => {
         loader(true);
         await updateStream(epasso, id, { status: !status });

@@ -1,4 +1,6 @@
 import { isEmpty } from 'lodash';
+import axios from 'axios';
+import { Parser } from 'm3u8-parser';
 
 // Streams Models
 import {
@@ -22,6 +24,9 @@ import { setStream } from '../redis/streams';
 
 // Markup validation helper
 import isInvalidMarkup from '../helpers/isInvalidMarkup';
+
+// URL validation helper
+import isUrl from '../helpers/isUrl';
 
 const getStreamsController = async (req, res) => {
   const { page, pageSize, search, orderBy } = req.query;
@@ -180,6 +185,30 @@ const deleteStreamController = async (req, res) => {
 };
 
 const validateStreamController = async (req, res) => {
+  const {
+    body: { url },
+  } = req;
+  if (!url || typeof url !== 'string') {
+    res.status(400).json('url should be in string format and not empty');
+  }
+  if (isUrl(url)) {
+    try {
+      const urlRes = await axios.get(url);
+      const manifest = urlRes.data;
+
+      const parser = new Parser();
+      await parser.push(manifest);
+      await parser.end();
+
+      const parsedManifest = parser.manifest;
+      console.log(parsedManifest, 'hello', 'j');
+    } catch (e) {
+      res.status(400).json('url is not reachable');
+    }
+    // const [path, parameters] = url.split('?');
+  } else {
+    res.status(400).json('please provide a valid url');
+  }
   res.status(200).json('stream validated successfully');
 };
 

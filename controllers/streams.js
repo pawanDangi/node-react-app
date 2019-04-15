@@ -1,6 +1,6 @@
 import { isEmpty } from 'lodash';
 import axios from 'axios';
-import { Parser } from 'm3u8-parser';
+import { resolve } from 'url';
 
 // Streams Models
 import {
@@ -27,6 +27,9 @@ import isInvalidMarkup from '../helpers/isInvalidMarkup';
 
 // URL validation helper
 import isUrl from '../helpers/isUrl';
+
+import getParsedManifest from '../helpers/getParsedManifest';
+import getStreamInfo from '../helpers/getStreamInfo';
 
 const getStreamsController = async (req, res) => {
   const { page, pageSize, search, orderBy } = req.query;
@@ -194,22 +197,23 @@ const validateStreamController = async (req, res) => {
   if (isUrl(url)) {
     try {
       const urlRes = await axios.get(url);
-      const manifest = urlRes.data;
+      let manifest = urlRes.data;
+      const parsedManifest = getParsedManifest(manifest);
+      const { playlists } = parsedManifest;
 
-      const parser = new Parser();
-      await parser.push(manifest);
-      await parser.end();
-
-      const parsedManifest = parser.manifest;
-      console.log(parsedManifest, 'hello', 'j');
+      if (playlists) {
+        const childUrl = resolve(url, playlists[0].uri);
+        const childUrlRes = await axios.get(childUrl);
+        manifest = childUrlRes.data;
+      }
+      const streamInfo = getStreamInfo(manifest);
+      res.status(200).json(streamInfo);
     } catch (e) {
       res.status(400).json('url is not reachable');
     }
-    // const [path, parameters] = url.split('?');
   } else {
     res.status(400).json('please provide a valid url');
   }
-  res.status(200).json('stream validated successfully');
 };
 
 export {

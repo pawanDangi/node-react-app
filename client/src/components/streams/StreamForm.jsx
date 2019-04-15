@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import React, { Component } from "react";
+import { withStyles } from "@material-ui/core/styles";
 import {
   Paper,
   Typography,
@@ -8,115 +8,140 @@ import {
   Button,
   MenuItem,
   Fab
-} from '@material-ui/core/';
-import { Add as AddIcon } from '@material-ui/icons/';
-import className from 'class-names';
+} from "@material-ui/core/";
+import { Add as AddIcon } from "@material-ui/icons/";
+import className from "class-names";
 
-import { background, text, primary } from '../../utils/colors';
+import { background, text, primary } from "../../utils/colors";
 
 const styles = theme => ({
   root: {
-    '& div': {
+    "& div": {
       background: background.paper
     }
   },
   page: {
     ...theme.mixins.gutters(),
-    [theme.breakpoints.down('xs')]: {
-      width: '90%',
-      margin: '0 5%'
+    [theme.breakpoints.down("xs")]: {
+      width: "90%",
+      margin: "0 5%"
     },
-    [theme.breakpoints.up('sm')]: {
-      width: '90%',
-      margin: '0 5%'
+    [theme.breakpoints.up("sm")]: {
+      width: "90%",
+      margin: "0 5%"
     },
-    [theme.breakpoints.up('md')]: {
-      width: '80%',
-      margin: '0 10%'
+    [theme.breakpoints.up("md")]: {
+      width: "80%",
+      margin: "0 10%"
     },
-    [theme.breakpoints.up('lg')]: {
-      width: '70%',
-      margin: '0 15%'
+    [theme.breakpoints.up("lg")]: {
+      width: "70%",
+      margin: "0 15%"
     },
-    padding: '15px !important'
+    padding: "15px !important"
   },
   heading: {
     borderBottom: `2px solid ${text.disabled}`,
     paddingBottom: 20,
-    fontSize: '18px'
+    fontSize: "18px"
   },
   title: {
-    padding: '10px 0px !important',
+    padding: "10px 0px !important",
     color: primary.light,
     fontWeight: 600,
-    fontSize: '18px'
+    fontSize: "18px"
   },
   form: {
-    padding: '20px 0 0'
+    padding: "20px 0 0"
   },
   grid: {
-    paddingTop: '5px !important',
-    paddingBottom: '5px !important',
-    display: 'flex',
-    alignItems: 'center'
+    paddingTop: "5px !important",
+    paddingBottom: "5px !important",
+    display: "flex",
+    alignItems: "center",
+    "& div": {
+      background: "none"
+    }
   },
   textField: {
     margin: 0
   },
   validate: {
-    alignItems: 'center',
-    display: 'flex'
+    alignItems: "center",
+    display: "flex"
   },
   validateBtn: {
     background: primary.main,
     color: primary.contrastText,
-    '&:hover': {
+    "&:hover": {
       background: primary.dark
     },
-    '&:focus': {
-      textDecoration: 'none',
-      outline: 'none'
+    "&:focus": {
+      textDecoration: "none",
+      outline: "none"
     }
   },
   addMarker: {
     background: primary.main,
     color: primary.contrastText,
-    '&:hover': {
+    "&:hover": {
       background: primary.dark
     },
-    '&:focus': {
-      textDecoration: 'none',
-      outline: 'none'
+    "&:focus": {
+      textDecoration: "none",
+      outline: "none"
     }
   },
   timeInput: {
-    width: '50px',
-    marginRight: '5px'
+    width: "50px",
+    marginRight: "5px"
   },
   timeTxt: {
-    paddingRight: '5px'
+    paddingRight: "5px"
   },
   or: {
-    width: '100%',
-    textAlign: 'center',
+    width: "100%",
+    textAlign: "center",
     borderBottom: `1px solid ${text.disabled}`,
-    lineHeight: '0.1em',
-    margin: '10px 0 20px',
-    paddingTop: '15px',
-    fontSize: '15px',
-    '& span': {
+    lineHeight: "0.1em",
+    margin: "10px 0 20px",
+    paddingTop: "15px",
+    fontSize: "15px",
+    "& span": {
       background: primary.contrastText,
       color: `${text.disabled}`,
-      padding: '0 10px'
+      padding: "0 10px"
     }
   }
 });
 
 class StreamForm extends Component {
-  state = {};
+  state = {
+    name: "",
+    url: "",
+    domain: "",
+    format: "",
+    type: "",
+    tags: ""
+  };
+
+  componentWillReceiveProps(props) {
+    const { streamData } = props;
+    const oldState = this.state;
+    this.setState({ ...oldState, ...streamData });
+  }
+
+  onChange = (key, e) => {
+    this.setState({
+      [key]: e.target.value
+    });
+  };
 
   render() {
-    const { classes } = this.props;
+    const { classes, validateStream } = this.props;
+    const { name, url, domain, format, type, tags } = this.state;
+    console.log(type);
+
     return (
       <div className={classes.root}>
         <Paper className={classes.page} elevation={1}>
@@ -142,6 +167,8 @@ class StreamForm extends Component {
                   fullWidth
                   margin="dense"
                   variant="outlined"
+                  value={name}
+                  onChange={e => this.onChange("name", e)}
                 />
               </Grid>
               <Grid item sm={10} xs={12} className={classes.grid}>
@@ -152,6 +179,8 @@ class StreamForm extends Component {
                   fullWidth
                   margin="dense"
                   variant="outlined"
+                  value={url}
+                  onChange={e => this.onChange("url", e)}
                 />
               </Grid>
               <Grid
@@ -160,7 +189,13 @@ class StreamForm extends Component {
                 xs={12}
                 className={className(classes.validate, classes.grid)}
               >
-                <Button variant="contained" className={classes.validateBtn}>
+                <Button
+                  variant="contained"
+                  className={classes.validateBtn}
+                  onClick={() => {
+                    validateStream(url);
+                  }}
+                >
                   Validate
                 </Button>
               </Grid>
@@ -172,6 +207,8 @@ class StreamForm extends Component {
                   fullWidth
                   margin="dense"
                   variant="outlined"
+                  value={domain}
+                  onChange={e => this.onChange("domain", e)}
                 />
               </Grid>
               <Grid item sm={5} xs={12} className={classes.grid}>
@@ -183,12 +220,13 @@ class StreamForm extends Component {
                   margin="dense"
                   variant="outlined"
                   select
-                  value={''}
+                  value={format}
+                  onChange={e => this.onChange("format", e)}
                 >
-                  <MenuItem key={'hls'} value={'HLS'}>
+                  <MenuItem key={"hls"} value={"HLS"}>
                     HLS
                   </MenuItem>
-                  <MenuItem key={'dash'} value={'DASH'}>
+                  <MenuItem key={"dash"} value={"DASH"}>
                     DASH
                   </MenuItem>
                 </TextField>
@@ -202,15 +240,16 @@ class StreamForm extends Component {
                   margin="dense"
                   variant="outlined"
                   select
-                  value={''}
+                  value={type}
+                  onChange={e => this.onChange("type", e)}
                 >
-                  <MenuItem key={'vod'} value={'vod'}>
+                  <MenuItem key={"vod"} value={"VOD"}>
                     VOD
                   </MenuItem>
-                  <MenuItem key={'live'} value={'live'}>
+                  <MenuItem key={"live"} value={"LIVE"}>
                     LIVE
                   </MenuItem>
-                  <MenuItem key={'event'} value={'event'}>
+                  <MenuItem key={"event"} value={"EVENT"}>
                     EVENT
                   </MenuItem>
                 </TextField>
@@ -223,6 +262,8 @@ class StreamForm extends Component {
                   fullWidth
                   margin="dense"
                   variant="outlined"
+                  value={tags}
+                  onChange={e => this.onChange("tags", e)}
                 />
               </Grid>
               <Grid item xs={12} className={classes.grid}>

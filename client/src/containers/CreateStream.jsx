@@ -1,13 +1,28 @@
-import React from 'react';
+import React, { Component } from "react";
 
-import StreamForm from '../components/streams/StreamForm';
+import { validateStream } from "../api/streams";
+import StreamForm from "../components/streams/StreamForm";
 
-function CreateStream() {
-  return (
-    <div>
-      <StreamForm />
-    </div>
-  );
+class CreateStream extends Component {
+  state = {
+    streamData: {}
+  };
+  validateStream = async url => {
+    const { data } = await validateStream("", url);
+    const { streamData } = this.state;
+    this.setState({ streamData: { ...streamData, ...data } });
+  };
+
+  render() {
+    const { streamData } = this.state;
+
+    return (
+      <StreamForm
+        validateStream={this.validateStream}
+        streamData={streamData}
+      />
+    );
+  }
 }
 
 export default CreateStream;

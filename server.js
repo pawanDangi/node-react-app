@@ -6,6 +6,7 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import auth from './middlewares/auth';
 import schemas from './schemas';
 import streams from './routes/streams';
+import dashboard from './routes/dashboard';
 
 const app = express();
 
@@ -45,6 +46,7 @@ app.use(bodyParser.json());
 
 // Use routes
 app.use('/api/streams', auth, streams);
+app.use('/api/dashboard', auth, dashboard);
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'prod') {

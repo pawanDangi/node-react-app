@@ -19,6 +19,8 @@
     "bitstring": "^1.0.0",
     "body-parser": "^1.18.3",
     "concurrently": "^4.1.0",
+    "elastic-builder": "^2.3.0",
+    "elasticsearch": "^15.4.1",
     "express": "^4.16.4",
     "ioredis": "^4.9.0",
     "lodash": "^4.17.11",

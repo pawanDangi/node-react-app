@@ -3,9 +3,9 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import swaggerJSDoc from 'swagger-jsdoc';
 
-import auth from './middlewares/auth';
-import schemas from './schemas';
-import streams from './routes/streams';
+import auth from './server/middlewares/auth';
+import schemas from './server/schemas';
+import streams from './server/routes/streams';
 import dashboard from './routes/dashboard';
 
 const app = express();

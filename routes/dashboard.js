@@ -1,3 +1,4 @@
+"use strict";
 import express from 'express';
 const router = express.Router();
 import {getDashboardGraphController, getDashboardOverviewController} from '../controllers/dashboard';

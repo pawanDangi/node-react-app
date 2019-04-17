@@ -6,14 +6,14 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import auth from './server/middlewares/auth';
 import schemas from './server/schemas';
 import streams from './server/routes/streams';
-import dashboard from './routes/dashboard';
+import dashboard from './server/routes/dashboard';
 
 const app = express();
 
 // swagger definition
 const swaggerDefinition = {
   host: '',
-  basePath: '/'
+  basePath: '/',
 };
 
 // options for the swagger docs
@@ -21,7 +21,7 @@ const options = {
   // import swaggerDefinitions
   swaggerDefinition,
   // path to the API docs
-  apis: ['./routes/*.js']
+  apis: ['./routes/*.js'],
 };
 
 // initialize swagger-jsdoc

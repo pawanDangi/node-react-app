@@ -21,7 +21,7 @@ const options = {
   // import swaggerDefinitions
   swaggerDefinition,
   // path to the API docs
-  apis: ['./routes/*.js'],
+  apis: ['./server/routes/*.js'],
 };
 
 // initialize swagger-jsdoc
@@ -34,11 +34,13 @@ app.get('/swagger.json', (req, res) => {
 });
 
 // Set static folder
-app.use(express.static('swagger/dist'));
+app.use(express.static('server/swagger/dist'));
 
 // Swagger
 app.get('/api-doc', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'swagger', 'dist', 'index.html'));
+  res.sendFile(
+    path.resolve(__dirname, 'server', 'swagger', 'dist', 'index.html')
+  );
 });
 
 // bodyParser middleware

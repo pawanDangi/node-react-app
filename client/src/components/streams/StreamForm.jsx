@@ -11,6 +11,7 @@ import {
 import { Add as AddIcon } from '@material-ui/icons/';
 import className from 'class-names';
 
+import TimeSlider from '../TimeSlider';
 import { background, text, primary } from '../../utils/colors';
 
 const styles = theme => ({
@@ -139,8 +140,18 @@ class StreamForm extends Component {
     domain: '',
     format: '',
     type: '',
-    tags: ''
+    tags: '',
+    markup: {
+      value: [],
+      type: ''
+    }
   };
+
+  componentWillMount() {
+    const { streamData } = this.props;
+    const oldState = this.state;
+    this.setState({ ...oldState, ...streamData });
+  }
 
   componentWillReceiveProps(props) {
     const { streamData } = props;
@@ -152,6 +163,20 @@ class StreamForm extends Component {
     this.setState({
       [key]: e.target.value
     });
+  };
+
+  addMarkups = type => e => {
+    console.log(e.target.value, type);
+  };
+
+  getDurationText = () => {
+    const { duration } = this.state;
+    if (!duration) {
+      return '0:00';
+    }
+    const minutes = Math.floor(duration / 60);
+    const seconds = duration - minutes * 60;
+    return `${minutes}:${seconds}`;
   };
 
   render() {
@@ -406,6 +431,7 @@ class StreamForm extends Component {
                   color="primary"
                   aria-label="Add"
                   className={classes.addMarker}
+                  onClick={this.addMarkups('slot')}
                 >
                   <AddIcon />
                 </Button>
@@ -512,6 +538,9 @@ class StreamForm extends Component {
                     />
                   </Grid>
                 </Grid>
+              </Grid>
+              <Grid item xs={12} className={className(classes.grid)}>
+                <TimeSlider text={this.getDurationText()} />
               </Grid>
               <Grid
                 item

@@ -1,14 +1,14 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import { validateStream } from "../api/streams";
-import StreamForm from "../components/streams/StreamForm";
+import { validateStream } from '../api/streams';
+import StreamForm from '../components/streams/StreamForm';
 
 class CreateStream extends Component {
   state = {
     streamData: {}
   };
   validateStream = async url => {
-    const { data } = await validateStream("", url);
+    const { data } = await validateStream('', url);
     const { streamData } = this.state;
     this.setState({ streamData: { ...streamData, ...data } });
   };

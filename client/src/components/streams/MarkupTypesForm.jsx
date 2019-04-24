@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import className from 'class-names';
 import {
   FormControl,
   RadioGroup,
@@ -14,8 +15,23 @@ const styles = theme => ({
     width: '100%'
   },
   radioLabel: {
-    width: '19%',
-    justifyContent: 'center'
+    justifyContent: 'end',
+    margin: 0
+  },
+  cueInOut: {
+    width: '17%'
+  },
+  epMarkers: {
+    width: '19%'
+  },
+  epMarkersF: {
+    width: '29%'
+  },
+  preRoll: {
+    width: '17%'
+  },
+  autoDetect: {
+    width: '18%'
   }
 });
 
@@ -45,31 +61,31 @@ class MarkupTypesForm extends Component {
           onChange={this.handleMarkupType}
         >
           <FormControlLabel
-            className={classes.radioLabel}
+            className={className(classes.radioLabel, classes.cueInOut)}
             value="cueInOut"
             control={<Radio />}
             label="Cue In/Out"
           />
           <FormControlLabel
-            className={classes.radioLabel}
+            className={className(classes.radioLabel, classes.epMarkers)}
             value="slot"
             control={<Radio />}
-            label="Slot Based"
+            label="EP Markers"
           />
           <FormControlLabel
-            className={classes.radioLabel}
+            className={className(classes.radioLabel, classes.epMarkersF)}
             value="frequency"
             control={<Radio />}
-            label="Frequency Based"
+            label="EP Markers(Frequency)"
           />
           <FormControlLabel
-            className={classes.radioLabel}
+            className={className(classes.radioLabel, classes.preRoll)}
             value="preRoll"
             control={<Radio />}
             label="Pre Roll"
           />
           <FormControlLabel
-            className={classes.radioLabel}
+            className={className(classes.radioLabel, classes.autoDetect)}
             value="autoDetect"
             control={<Radio />}
             label="Auto Detect"

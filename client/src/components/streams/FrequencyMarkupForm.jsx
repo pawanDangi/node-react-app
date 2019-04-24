@@ -27,18 +27,18 @@ class FrequencyMarkupForm extends Component {
     const { classes } = this.props;
     return (
       <React.Fragment>
-        <Grid item xs={12} className={classes.grid}>
+        <Grid item xs={10} className={classes.grid}>
           <Grid container spacing={8}>
-            <Grid item xs={7} md={8} className={classes.grid}>
+            <Grid item xs={6} className={classes.grid}>
               <Typography
                 className={classes.timeTxt}
                 variant="subheading"
                 component="p"
               >
-                Start
+                Every
               </Typography>
               <TextField
-                id="ep-markers-start-min-input"
+                id="ep-markers-every-min-input"
                 variant="outlined"
                 fullWidth
                 className={classes.timeInput}
@@ -46,17 +46,8 @@ class FrequencyMarkupForm extends Component {
                 type="number"
                 margin="dense"
               />
-              <TextField
-                id="ep-markers-start-sec-input"
-                variant="outlined"
-                fullWidth
-                className={classes.timeInput}
-                label="sec"
-                type="number"
-                margin="dense"
-              />
             </Grid>
-            <Grid item xs={5} md={4} className={classes.grid}>
+            <Grid item xs={6} className={classes.grid}>
               <Typography
                 className={classes.timeTxt}
                 variant="subheading"
@@ -65,12 +56,12 @@ class FrequencyMarkupForm extends Component {
                 Duration
               </Typography>
               <TextField
-                id="ep-markers-duration-sec-input"
+                id="ep-markers-every-duration-sec-input"
                 variant="outlined"
                 fullWidth
                 className={classes.timeInput}
-                type="number"
                 label="sec"
+                type="number"
                 margin="dense"
               />
             </Grid>

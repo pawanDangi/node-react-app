@@ -13,7 +13,8 @@ const getStreamInfo = manifest => {
     playlistType = 'LIVE';
   }
 
-  const duration = reduce(segments, (sum, n) => sum + n.duration, 0);
+  const duration =
+    (reduce(segments, (sum, n) => sum + n.duration, 0) || 0) * 1000;
   return {
     type: playlistType,
     duration,

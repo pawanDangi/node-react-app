@@ -8,9 +8,14 @@ import {
   Button,
   MenuItem
 } from '@material-ui/core/';
-import { Add as AddIcon } from '@material-ui/icons/';
 import className from 'class-names';
 
+import MarkupTypesForm from './MarkupTypesForm';
+import SlotMarkupForm from './SlotMarkupForm';
+import QueInOutMarkupForm from './QueInOutMarkupForm';
+import FrequencyMarkupForm from './FrequencyMarkupForm';
+import PreRollMarkupForm from './PreRollMarkupForm';
+import AutoDetectMarkupForm from './AutoDetectMarkupForm';
 import TimeSlider from '../TimeSlider';
 import { background, text, primary } from '../../utils/colors';
 
@@ -82,38 +87,6 @@ const styles = theme => ({
       outline: 'none'
     }
   },
-  addMarker: {
-    background: primary.main,
-    color: primary.contrastText,
-    '&:hover': {
-      background: primary.dark
-    },
-    '&:focus': {
-      textDecoration: 'none',
-      outline: 'none'
-    }
-  },
-  timeInput: {
-    width: '50%',
-    marginRight: '5px'
-  },
-  timeTxt: {
-    paddingRight: '5px'
-  },
-  or: {
-    width: '100%',
-    textAlign: 'center',
-    borderBottom: `1px solid ${text.disabled}`,
-    lineHeight: '0.1em',
-    margin: '0',
-    paddingTop: '0',
-    fontSize: '15px',
-    '& span': {
-      background: primary.contrastText,
-      color: `${text.disabled}`,
-      padding: '0 10px'
-    }
-  },
   action: {
     justifyContent: 'flex-end'
   },
@@ -165,8 +138,10 @@ class StreamForm extends Component {
     });
   };
 
-  addMarkups = type => e => {
-    console.log(e.target.value, type);
+  handleMarkupType = type => {
+    let { markup } = this.state;
+    markup.type = type;
+    this.setState({ markup });
   };
 
   getDurationText = () => {
@@ -181,7 +156,7 @@ class StreamForm extends Component {
 
   render() {
     const { classes, validateStream } = this.props;
-    const { name, url, domain, format, type, tags } = this.state;
+    const { name, url, domain, format, type, tags, markup } = this.state;
 
     return (
       <div className={classes.root}>
@@ -316,229 +291,14 @@ class StreamForm extends Component {
                   AD MARKUPS
                 </Typography>
               </Grid>
-              <Grid item md={2} xs={12} className={classes.grid}>
-                <Typography variant="subheading" component="p">
-                  CUE OUT/IN :
-                </Typography>
+              <Grid item xs={12} className={classes.grid}>
+                <MarkupTypesForm handleMarkupType={this.handleMarkupType} />
               </Grid>
-              <Grid item md={8} xs={10} className={classes.grid}>
-                <Grid container spacing={8}>
-                  <Grid item xs={6} className={classes.grid}>
-                    <Typography
-                      className={classes.timeTxt}
-                      variant="subheading"
-                      component="p"
-                    >
-                      START
-                    </Typography>
-                    <TextField
-                      id="ep-markers-start-min-input"
-                      variant="outlined"
-                      fullWidth
-                      className={classes.timeInput}
-                      label="min"
-                      type="number"
-                      margin="dense"
-                    />
-                    <TextField
-                      id="ep-markers-start-sec-input"
-                      variant="outlined"
-                      fullWidth
-                      className={classes.timeInput}
-                      label="sec"
-                      type="number"
-                      margin="dense"
-                    />
-                  </Grid>
-                  <Grid item xs={6} className={classes.grid}>
-                    <Typography
-                      className={classes.timeTxt}
-                      variant="subheading"
-                      component="p"
-                    >
-                      DURATION
-                    </Typography>
-                    <TextField
-                      id="ep-markers-duration-sec-input"
-                      variant="outlined"
-                      fullWidth
-                      className={classes.timeInput}
-                      type="number"
-                      label="sec"
-                      margin="dense"
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={2} className={classes.grid} />
-              <Grid item md={2} xs={12} className={classes.grid}>
-                <Typography variant="subheading" component="p">
-                  EP MARKERS :
-                </Typography>
-              </Grid>
-              <Grid item md={8} xs={10} className={classes.grid}>
-                <Grid container spacing={8}>
-                  <Grid item xs={6} className={classes.grid}>
-                    <Typography
-                      className={classes.timeTxt}
-                      variant="subheading"
-                      component="p"
-                    >
-                      START
-                    </Typography>
-                    <TextField
-                      id="ep-markers-start-min-input"
-                      variant="outlined"
-                      fullWidth
-                      className={classes.timeInput}
-                      label="min"
-                      type="number"
-                      margin="dense"
-                    />
-                    <TextField
-                      id="ep-markers-start-sec-input"
-                      variant="outlined"
-                      fullWidth
-                      className={classes.timeInput}
-                      label="sec"
-                      type="number"
-                      margin="dense"
-                    />
-                  </Grid>
-                  <Grid item xs={6} className={classes.grid}>
-                    <Typography
-                      className={classes.timeTxt}
-                      variant="subheading"
-                      component="p"
-                    >
-                      DURATION
-                    </Typography>
-                    <TextField
-                      id="ep-markers-duration-sec-input"
-                      variant="outlined"
-                      fullWidth
-                      className={classes.timeInput}
-                      type="number"
-                      label="sec"
-                      margin="dense"
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={2} className={classes.grid}>
-                <Button
-                  size="small"
-                  color="primary"
-                  aria-label="Add"
-                  className={classes.addMarker}
-                  onClick={this.addMarkups('slot')}
-                >
-                  <AddIcon />
-                </Button>
-              </Grid>
-              <Grid item md={2} xs={12} className={classes.grid} />
-              <Grid item md={8} xs={10} className={classes.grid}>
-                <h2 className={classes.or}>
-                  <span>OR</span>
-                </h2>
-              </Grid>
-              <Grid item xs={2} className={classes.grid} />
-              <Grid item md={2} xs={12} className={classes.grid} />
-              <Grid item md={8} xs={10} className={classes.grid}>
-                <Grid container spacing={8}>
-                  <Grid item xs={6} className={classes.grid}>
-                    <Typography
-                      className={classes.timeTxt}
-                      variant="subheading"
-                      component="p"
-                    >
-                      EVERY
-                    </Typography>
-                    <TextField
-                      id="ep-markers-every-min-input"
-                      variant="outlined"
-                      fullWidth
-                      className={classes.timeInput}
-                      label="min"
-                      type="number"
-                      margin="dense"
-                    />
-                  </Grid>
-                  <Grid item xs={6} className={classes.grid}>
-                    <Typography
-                      className={classes.timeTxt}
-                      variant="subheading"
-                      component="p"
-                    >
-                      DURATION
-                    </Typography>
-                    <TextField
-                      id="ep-markers-every-duration-sec-input"
-                      variant="outlined"
-                      fullWidth
-                      className={classes.timeInput}
-                      label="sec"
-                      type="number"
-                      margin="dense"
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={2} className={classes.grid} />
-              <Grid item md={2} xs={12} className={classes.grid}>
-                <Typography variant="subheading" component="p">
-                  AUTO DETECT :
-                </Typography>
-              </Grid>
-              <Grid item md={8} xs={10} className={classes.grid}>
-                <Grid container spacing={8}>
-                  <Grid item xs={6} className={classes.grid}>
-                    <Typography
-                      className={classes.timeTxt}
-                      variant="subheading"
-                      component="p"
-                    >
-                      START
-                    </Typography>
-                    <TextField
-                      id="ep-markers-start-min-input"
-                      variant="outlined"
-                      fullWidth
-                      className={classes.timeInput}
-                      label="min"
-                      type="number"
-                      margin="dense"
-                    />
-                    <TextField
-                      id="ep-markers-start-sec-input"
-                      variant="outlined"
-                      fullWidth
-                      className={classes.timeInput}
-                      label="sec"
-                      type="number"
-                      margin="dense"
-                    />
-                  </Grid>
-                  <Grid item xs={6} className={classes.grid}>
-                    <Typography
-                      className={classes.timeTxt}
-                      variant="subheading"
-                      component="p"
-                    >
-                      DURATION
-                    </Typography>
-                    <TextField
-                      id="ep-markers-duration-sec-input"
-                      variant="outlined"
-                      fullWidth
-                      className={classes.timeInput}
-                      type="number"
-                      label="sec"
-                      margin="dense"
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
+              {markup.type === 'cueInOut' ? <QueInOutMarkupForm /> : ''}
+              {markup.type === 'slot' ? <SlotMarkupForm /> : ''}
+              {markup.type === 'frequency' ? <FrequencyMarkupForm /> : ''}
+              {markup.type === 'preRoll' ? <PreRollMarkupForm /> : ''}
+              {markup.type === 'autoDetect' ? <AutoDetectMarkupForm /> : ''}
               <Grid item xs={12} className={className(classes.grid)}>
                 <TimeSlider text={this.getDurationText()} />
               </Grid>

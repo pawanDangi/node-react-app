@@ -23,8 +23,25 @@ const styles = () => ({
 });
 
 class PreRollMarkupForm extends Component {
+  state = {
+    status: 0,
+    adPodDuration: ''
+  };
+
+  handleChange = key => e => {
+    this.setState({ [key]: Number(e.target.value) || 0, status: 1 }, () => {
+      const { status, adPodDuration } = this.state;
+      const { setMarkupValue } = this.props;
+      setMarkupValue({
+        status,
+        adPodDuration: adPodDuration * 1000
+      });
+    });
+  };
+
   render() {
     const { classes } = this.props;
+    const { adPodDuration } = this.props;
     return (
       <React.Fragment>
         <Grid item xs={12} className={classes.grid}>
@@ -38,13 +55,16 @@ class PreRollMarkupForm extends Component {
                 Duration
               </Typography>
               <TextField
-                id="ep-markers-every-duration-sec-input"
+                id="ep-markers-pre-roll-duration-sec-input"
                 variant="outlined"
                 fullWidth
                 className={classes.timeInput}
                 label="sec"
                 type="number"
                 margin="dense"
+                value={adPodDuration}
+                inputProps={{ min: 0, step: 1 }}
+                onChange={this.handleChange('adPodDuration')}
               />
             </Grid>
           </Grid>

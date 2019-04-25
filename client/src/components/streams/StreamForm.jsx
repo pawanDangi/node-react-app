@@ -158,6 +158,7 @@ class StreamForm extends Component {
   setMarkupValue = value => {
     let { markup } = this.state;
     markup.value = value;
+    console.log(markup);
     this.setState({ markup });
   };
 
@@ -307,8 +308,16 @@ class StreamForm extends Component {
               ) : (
                 ''
               )}
-              {markup.type === 'frequency' ? <FrequencyMarkupForm /> : ''}
-              {markup.type === 'preRoll' ? <PreRollMarkupForm /> : ''}
+              {markup.type === 'frequency' ? (
+                <FrequencyMarkupForm setMarkupValue={this.setMarkupValue} />
+              ) : (
+                ''
+              )}
+              {markup.type === 'preRoll' ? (
+                <PreRollMarkupForm setMarkupValue={this.setMarkupValue} />
+              ) : (
+                ''
+              )}
               {markup.type === 'autoDetect' ? <AutoDetectMarkupForm /> : ''}
               <Grid item xs={12} className={className(classes.grid)}>
                 <TimeSlider text={this.getDurationText()} />

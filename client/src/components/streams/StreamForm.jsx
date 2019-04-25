@@ -141,6 +141,7 @@ class StreamForm extends Component {
   handleMarkupType = type => {
     let { markup } = this.state;
     markup.type = type;
+    markup.value = [];
     this.setState({ markup });
   };
 
@@ -152,6 +153,12 @@ class StreamForm extends Component {
     const minutes = Math.floor(duration / 60);
     const seconds = duration - minutes * 60;
     return `${minutes}:${seconds}`;
+  };
+
+  setMarkupValue = value => {
+    let { markup } = this.state;
+    markup.value = value;
+    this.setState({ markup });
   };
 
   render() {
@@ -295,7 +302,11 @@ class StreamForm extends Component {
                 <MarkupTypesForm handleMarkupType={this.handleMarkupType} />
               </Grid>
               {markup.type === 'cueInOut' ? <QueInOutMarkupForm /> : ''}
-              {markup.type === 'slot' ? <SlotMarkupForm /> : ''}
+              {markup.type === 'slot' ? (
+                <SlotMarkupForm setMarkupValue={this.setMarkupValue} />
+              ) : (
+                ''
+              )}
               {markup.type === 'frequency' ? <FrequencyMarkupForm /> : ''}
               {markup.type === 'preRoll' ? <PreRollMarkupForm /> : ''}
               {markup.type === 'autoDetect' ? <AutoDetectMarkupForm /> : ''}
